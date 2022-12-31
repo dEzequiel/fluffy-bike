@@ -1,0 +1,36 @@
+{
+  "name": "fluffy-bike",
+  "version": "1.0.0",
+  "description": "NODEJS, EXPRESS, MONGODB API",
+  "main": "app",
+  "scripts": {
+    "devstart": "cross-env NODE_ENV=development node ./app.js",
+    "start": "cross-env NODE_ENV=production node ./app.js",
+    "migrate": "node ./db/mongo/migrate_all.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dEzequiel/fluffy-bike.git"
+  },
+  "author": "Ezequiel De La Rosa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dEzequiel/fluffy-bike/issues"
+  },
+  "homepage": "https://github.com/dEzequiel/fluffy-bike#readme",
+  "devDependencies": {
+    "@shelf/jest-mongodb": "^4.1.4",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "jest": "^29.3.1",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongodb": "^4.13.0",
+    "mongoose": "^6.8.2"
+  }
+}
