@@ -1,4 +1,4 @@
-const databaseModule = require("./config/mongoConfig.js");
+const databaseModule = require("./infraestructure/mongoConfig.js");
 const express = require("express");
 const cors = require("cors");
 
