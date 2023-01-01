@@ -24,7 +24,9 @@ async function migrate() {
     if (documents > 0) {
       console.log("Seeding testing collection complete!");
     }
-    client.close();
+
+    // Force client.close() to wait for async operations to finish.
+    await client.close();
   } catch (ex) {
     console.error(ex.message);
   }
