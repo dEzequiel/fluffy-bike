@@ -22,7 +22,7 @@ const databaseModule = (function () {
   let uri;
 
   if (process.env.NODE_ENV === "development") {
-    uri = uris['development'];
+    uri = uris["development"];
   } else {
     uri = uris["production"];
   }
@@ -33,6 +33,7 @@ const databaseModule = (function () {
     mongoose.connect(
       uri,
       {
+        dbName: "BikehubDB",
         usenewUrlParser: true,
         useUnifiedTopology: true,
       },
@@ -55,7 +56,7 @@ const databaseModule = (function () {
   /** MODULE PATTERN
    * Object properties pointing to functions
    * returned inside this IIFE.
-   * 
+   *
    * Only this public attributes are available outside
    * this module.
    */
@@ -64,6 +65,5 @@ const databaseModule = (function () {
     getDb: getDb,
   };
 })();
-
 
 module.exports = databaseModule;
