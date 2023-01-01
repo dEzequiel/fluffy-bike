@@ -6,7 +6,7 @@
   "scripts": {
     "devstart": "cross-env NODE_ENV=development node ./app.js",
     "start": "cross-env NODE_ENV=production node ./app.js",
-    "migrate": "node ./db/mongo/migrate_all.js",
+    "migrate": "node ./infraestructure/mongoMigration.js",
     "test": "jest"
   },
   "repository": {
