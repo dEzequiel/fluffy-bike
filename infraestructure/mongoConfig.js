@@ -30,11 +30,16 @@ const databaseModule = (function () {
 
   async function connect() {
     mongoose.set("strictQuery", true);
-    await mongoose.connect(uri, {
-      dbName: "BikehubDB",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    try {
+      await mongoose.connect(uri, {
+        dbName: "BikehubDB",
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      console.log("Connected to MongoDB");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   function getConnection() {
