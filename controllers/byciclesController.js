@@ -1,13 +1,29 @@
 const service = require("../services/byciclesService.js");
+var bycicleService = require("../services/byciclesService.js");
+// Module pattern
 
-async function getById(req, res) {
-  const contextObject = {
-    bycicle: req.bycicle,
-    id: req.params.id,
+////// Module pattern
+const byciclesController = (function () {
+  const getById = async (req, res) => {
+    // Desacoplate the service from express
+    const contextObject = {
+      bycicle: req.bycicle,
+      id: req.params.id,
+    };
+
+    // Await for the service response
+    const result = await bycicleService.bycicleServiceApi.getByIdAsync(
+      contextObject
+    );
+
+    // Return the response
+    return res.status(200).json(result);
   };
-  res.status(200).json(await service.getByIdAsync(contextObject));
-}
 
+  // Public API
+  return {
+    getById,
+  };
+})();
 
-
-module.exports.getById = getById;
+exports.bycicleControllerApi = byciclesController;
