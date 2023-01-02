@@ -16,6 +16,7 @@ dotenv.config();
 
 var uris = {
   development: process.env.MONGO_URI_DEVELOPMENT,
+  production: process.env.MONGO_URI_DEVELOPMENT,
 };
 
 const databaseModule = (function () {
@@ -27,33 +28,21 @@ const databaseModule = (function () {
     uri = uris["production"];
   }
 
-  function connect() {
+  async function connect() {
     mongoose.set("strictQuery", true);
-    mongoose
-      .connect(uri, {
-        dbName: "BikehubDB",
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      })
-      .then(() => {
-        console.log("Connected to database");
-      })
-      .catch((err) => console.log("Error connecting to database", err));
+    await mongoose.connect(uri, {
+      dbName: "BikehubDB",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
   }
 
   function getConnection() {
     return mongoose.connection;
   }
 
-  function disconnect() {
-    return mongoose.connection
-      .close()
-      .then(() => {
-        console.log("Disconnected");
-      })
-      .catch((err) => {
-        console.log("Error trying to disconnect", err);
-      });
+  async function disconnect() {
+    await mongoose.disconnect();
   }
   /** MODULE PATTERN
    * Object properties pointing to functions
