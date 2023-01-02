@@ -27,32 +27,34 @@ const databaseModule = (function () {
     uri = uris["production"];
   }
 
-  let db;
   function connect() {
     mongoose.set("strictQuery", true);
-    mongoose.connect(
-      uri,
-      {
+    mongoose
+      .connect(uri, {
         dbName: "BikehubDB",
-        usenewUrlParser: true,
+        useNewUrlParser: true,
         useUnifiedTopology: true,
-      },
-      (err, res) => {
-        if (err) {
-          console.log("MongoDB not connected");
-        } else {
-          console.log("MongoDB connected");
-        }
-      }
-    );
-
-    db = mongoose.connection;
+      })
+      .then(() => {
+        console.log("Connected to database");
+      })
+      .catch((err) => console.log("Error connecting to database", err));
   }
 
-  function getDb() {
-    return db;
+  function getConnection() {
+    return mongoose.connection;
   }
 
+  function disconnect() {
+    return mongoose.connection
+      .close()
+      .then(() => {
+        console.log("Disconnected");
+      })
+      .catch((err) => {
+        console.log("Error trying to disconnect", err);
+      });
+  }
   /** MODULE PATTERN
    * Object properties pointing to functions
    * returned inside this IIFE.
@@ -62,7 +64,8 @@ const databaseModule = (function () {
    */
   return {
     connect: connect,
-    getDb: getDb,
+    getConnection: getConnection,
+    disconnect: disconnect,
   };
 })();
 
