@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 
+// SINGLETON
+// Cuando quieres garantizar que solo exista una única instancia de una 
+// clase que se encarga de la gestión de ciertos recursos compartidos, 
+// como una base de datos o una conexión a un servicio externo.
+
 /**
  * 
  * NODE_ENV=development

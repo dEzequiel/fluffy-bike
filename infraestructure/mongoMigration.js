@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const mockedBycicles = require("../tests/json_collection/bycicles");
+const mockedBycicles = require("../tests/byciclesForSeeding.js");
 const dotenv = require("dotenv");
 dotenv.config();
 

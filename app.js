@@ -1,6 +1,7 @@
 const databaseModule = require("./infraestructure/mongoConfig.js");
 const express = require("express");
 const cors = require("cors");
+const Model = require("./models/nosql/bycicle.js");
 
 const port = process.env.PORT || 3000;
 var app = express();

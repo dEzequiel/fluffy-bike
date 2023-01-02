@@ -1,6 +1,6 @@
 const { expect } = require("@jest/globals");
 const request = require("supertest");
-const app = require("./server.js");
+const app = require("../server.js");
 const databaseModule = require("../../infraestructure/mongoConfig.js");
 
 // Usage of jest sintaxis
@@ -31,7 +31,7 @@ describe("Controllers testing", () => {
   test("GET /skeleton/:id should be mongo obj", async () => {
     // Arrange
     const expected = {
-      _id: "63b1db13b2ade9465c9c5d0d",
+      id: "63b1db13b2ade9465c9c5d0d",
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -49,7 +49,7 @@ describe("Controllers testing", () => {
 
     // Act and assert
     await request(app)
-      .get(`/skeleton/${expected._id}`)
+      .get(`/skeleton/${expected.id}`)
       .expect(200)
       .then((res) => {
         // assertions
