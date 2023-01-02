@@ -5,13 +5,14 @@ dotenv.config();
 
 let client;
 let db;
+let collection;
 
 async function migrate() {
   client = new MongoClient(process.env.MONGO_URI_DEVELOPMENT);
   try {
     await client.connect();
     db = client.db("BikehubDB");
-    const collection = db.collection("Testing");
+    collection = db.collection("Testing");
 
     let documents = await collection.estimatedDocumentCount();
     if (documents > 0)
