@@ -10,7 +10,8 @@ const BycicleSchema = new mongoose.Schema(
   {
     name: { type: String }, //unique: true
     brand: {
-      type: ["All City", "Argon 18", "Bulls", "CUBE"],
+      type: String,
+      enum: ["All City", "Argon 18", "Bulls", "CUBE"],
       default: "All City",
     },
     price: {
@@ -21,25 +22,29 @@ const BycicleSchema = new mongoose.Schema(
         }
       },
     },
-    type: { type: ["Road", "Mountain", "Urban", "BMX"], default: "Road" },
-    frame: { type: ["Aluminium", "Carbon", "Steel"] },
-    fork: { type: ["XC", "Trail", "Enduro", "Downhill"] },
+    type: {
+      type: String,
+      enum: ["Road", "Mountain", "Urban", "BMX"],
+    },
+    frame: { type: String, enum: ["Aluminium", "Carbon", "Steel"] },
+    fork: { type: String, enum: ["XC", "Trail", "Enduro", "Downhill"] },
     gears: {
-      type: [
+      type: String,
+      enum: [
         "Single speed",
         "Fixed gear",
         "Derailleur gears",
         "Internal gear hub",
       ],
-      default: "Single speed",
     },
     brakes: {
-      type: ["Hydraulic Disc", "Rim", "Mechanical Disc", "Coaster"],
-      default: "Hydraulic Disc",
+      type: String,
+      enum: ["Hydraulic Disc", "Rim", "Mechanical Disc", "Coaster"],
     },
-    wheels: { type: ["700c", "27.5", "24"] },
+    wheels: { type: String, enum: ["700c", "27.5", "24"] },
     tires: {
-      type: [
+      type: String,
+      enum: [
         "Road tires",
         "Mountain bike tires",
         "Hybrid tires",
@@ -47,7 +52,7 @@ const BycicleSchema = new mongoose.Schema(
         "Touring tires",
       ],
     },
-    suspension: { type: ["Hardtail", "Full", "Rigid"], default: "Hardtail" },
+    suspension: { type: String, enum: ["Hardtail", "Full", "Rigid"] },
     weight: {
       type: Number,
       validate: (value) => {
