@@ -1,5 +1,5 @@
 const express = require("express");
-const byciclesController = require("../controllers/byciclesController.js");
+const controllers = require("../controllers");
 
 const router = express.Router();
 
@@ -7,6 +7,6 @@ router.get("/", (req, res) => {
   res.send({ message: "Hello World" });
 });
 
-router.get("/:id", byciclesController.bycicleControllerApi.getById);
+router.get("/:id", controllers.byciclesController.bycicleControllerApi.getById);
 
 module.exports = router;

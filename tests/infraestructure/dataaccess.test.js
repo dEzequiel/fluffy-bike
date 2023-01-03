@@ -1,18 +1,19 @@
-const databaseModule = require("../../infraestructure/mongodb.config.js");
+// const databaseModule = require("../../infraestructure/mongodb.config.js");
+const infraestructure = require("../../infraestructure");
 const { expect } = require("@jest/globals");
 const Model = require("../../models/nosql/bycicle.js");
 
 let connection;
 describe("Mongoose testing", () => {
   beforeAll(async () => {
-    await databaseModule.connect();
+    await infraestructure.mongoDbConfig.connect();
   });
 
   afterAll(async () => {
-    await databaseModule.disconnect();
+    await infraestructure.mongoDbConfig.disconnect();
   });
 
-  connection = databaseModule.getConnection();
+  connection = infraestructure.mongoDbConfig.getConnection();
 
   test("Should connect to database", async () => {
     expect(connection.readyState).toEqual(1); // Status connected. Not connecting, is different.

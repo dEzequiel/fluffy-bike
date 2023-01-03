@@ -1,5 +1,4 @@
-const service = require("../services/byciclesService.js");
-var bycicleService = require("../services/byciclesService.js");
+const services = require("../services");
 // Module pattern
 
 ////// Module pattern
@@ -12,9 +11,10 @@ const byciclesController = (function () {
     };
 
     // Await for the service response
-    const result = await bycicleService.bycicleServiceApi.getByIdAsync(
-      contextObject
-    );
+    const result =
+      await services.byciclesService.bycicleServiceApi.getByIdAsync(
+        contextObject
+      );
 
     // Return the response
     return res.status(200).json(result);
