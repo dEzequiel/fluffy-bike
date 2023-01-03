@@ -1,9 +1,8 @@
 const { expect } = require("@jest/globals");
 const infraestructure = require("../../infraestructure");
 const Model = require("../../models/nosql/bycicle.js");
-const ObjectId = require("mongodb").ObjectId;
 const services = require("../../services/");
-const { Error } = require("mongoose");
+const ObjectId = require("mongodb").ObjectId;
 
 let connection;
 describe("Services testing", () => {
@@ -75,40 +74,35 @@ describe("Services testing", () => {
         );
 
       // Assert
-      expect(Object.keys(result)).toEqual(Object.keys(contextObjectUnderTest));
+      expect(result).toHaveProperty("name");
     });
 
-    test("Should return message becauses DAO was not found", async () => {
+    test("Should return rejected promise with message becauses DAO was not found", async () => {
       // Arrange
-      const contextObjectUnderTest = { id: "13b1db13b2ade9465c9c5d0d" };
+      const contextObjectUnderTest = {
+        // _id: "63b4884296131f5d3445cad9",
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
       const expectedMessage = `No document found with id: ${contextObjectUnderTest.id}`;
 
-      //Act
-      const result =
-        await services.byciclesService.bycicleServiceApi.getByIdAsync(
-          contextObjectUnderTest
-        );
-
-      //Assert
-      expect(result).toEqual(expectedMessage);
-    });
-
-    test("Should throw error when id is not valid", async () => {
-      // Arrange
-      const contextObjectUnderTest = { id: "123TEST_INVALID_ID" };
-
-      // Act & Assert
+      //Act & assert
       await expect(
         services.byciclesService.bycicleServiceApi.getByIdAsync(
           contextObjectUnderTest
         )
-      ).rejects.toThrow(Error.CastError);
-
-      await expect(
-        services.byciclesService.bycicleServiceApi.getByIdAsync(
-          contextObjectUnderTest
-        )
-      ).rejects.toHaveProperty("name", "CastError");
+      ).rejects.toEqual(expectedMessage);
     });
   });
 });

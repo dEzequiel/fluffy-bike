@@ -9,9 +9,12 @@ const mongoDataAccessLayer = (function () {
           console.error(err);
           reject(err);
         } else {
+          if (result === null) {
+            reject(`No document found with id: ${id}`)
+          }
           resolve(result);
         }
-      });
+      }); // Return plain js object instead of mongoose document
     });
     return response;
   };

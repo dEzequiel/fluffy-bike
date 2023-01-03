@@ -1,5 +1,5 @@
 const Model = require("../models/nosql/bycicle.js");
-const destructDAO = require("../utils/destructBycicleDAO.js");
+const anyToJSON = require("../utils/toJSON.js");
 const mongoDataAccessLayer =
   require("../infraestructure/data-access/mongo.bycicles.layer.js").MongoDataAccesApi;
 
@@ -12,8 +12,7 @@ const byciclesService = (function () {
 
     // Get entity from the database and process it to return plain object
     const entity = mongoDataAccessLayer.findByIdAsync(id).then((result) => {
-      const forGet = destructDAO(result);
-
+      const forGet = anyToJSON(result);
       return forGet;
     });
 
