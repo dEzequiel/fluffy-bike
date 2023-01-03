@@ -3,6 +3,7 @@ const infraestructure = require("../../infraestructure");
 const Model = require("../../models/nosql/bycicle.js");
 const ObjectId = require("mongodb").ObjectId;
 const services = require("../../services/");
+const { Error } = require("mongoose");
 
 let connection;
 describe("Services testing", () => {
@@ -78,7 +79,6 @@ describe("Services testing", () => {
     });
 
     test("Should return message becauses DAO was not found", async () => {
-      
       // Arrange
       const contextObjectUnderTest = { id: "13b1db13b2ade9465c9c5d0d" };
       const expectedMessage = `No document found with id: ${contextObjectUnderTest.id}`;
@@ -91,6 +91,18 @@ describe("Services testing", () => {
 
       //Assert
       expect(result).toEqual(expectedMessage);
+    });
+
+    test("Should throw error when id is not valid", async () => {
+      // Arrange
+      const contextObjectUnderTest = { id: "123TEST_INVALID_ID" };
+
+      // Act & Assert
+      await expect(
+        services.byciclesService.bycicleServiceApi.getByIdAsync(
+          contextObjectUnderTest
+        )
+      ).rejects.toThrow(Error.CastError);
     });
   });
 });
