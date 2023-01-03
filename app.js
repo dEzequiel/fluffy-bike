@@ -1,4 +1,4 @@
-const databaseModule = require("./infraestructure/mongoConfig.js");
+const databaseModule = require("./infraestructure/mongodb.config.js");
 
 //https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
 (async () => {

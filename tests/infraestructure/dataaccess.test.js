@@ -1,4 +1,4 @@
-const databaseModule = require("../../infraestructure/mongoConfig.js");
+const databaseModule = require("../../infraestructure/mongodb.config.js");
 const { expect } = require("@jest/globals");
 const Model = require("../../models/nosql/bycicle.js");
 

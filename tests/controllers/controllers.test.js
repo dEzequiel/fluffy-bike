@@ -1,7 +1,7 @@
 const { expect } = require("@jest/globals");
 const request = require("supertest");
 const app = require("../server.js");
-const databaseModule = require("../../infraestructure/mongoConfig.js");
+const databaseModule = require("../../infraestructure/mongodb.config.js");
 
 // Usage of jest sintaxis
 // Assertions occurs inside promise callback
