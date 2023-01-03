@@ -1,11 +1,4 @@
 const databaseModule = require("./infraestructure/mongoConfig.js");
-const express = require("express");
-const cors = require("cors");
-const Model = require("./models/nosql/bycicle.js");
-
-const port = process.env.PORT || 3000;
-var app = express();
-const routes = require("./routes");
 
 //https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
 (async () => {
@@ -17,15 +10,17 @@ const routes = require("./routes");
   }
   // `Database` is not available here
 })();
-
-// `Database` is not available here, either, and code here is reached before the promise settles
-// and before the code after `await` in the main function above runs
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+const express = require("express");
+var app = express();
+console.log('Express app running...')
 
 app.use(express.json());
+
+const cors = require("cors");
 app.use(cors());
+
+
+const routes = require("./routes");
 app.use(routes);
 
 module.exports = app;

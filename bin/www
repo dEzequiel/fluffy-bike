@@ -1,0 +1,13 @@
+// Basically it removes all the create and start server code 
+// from your app.js and let you focus only on the application logic part
+
+const app = require("../app");
+const http = require("http");
+
+// Get port from environment and store in Express.
+const port = process.env.PORT || "3000";
+app.set("port", port);
+
+// Create HTTP server.
+const server = http.createServer(app);
+server.listen(port);
