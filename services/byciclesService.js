@@ -10,14 +10,15 @@ const byciclesService = (function () {
     // Destructuring to receive only wanted properties
     const { bycicle, id } = contextObject;
 
-    // Get entity from the database
-    const entity = await mongoDataAccessLayer.findByIdAsync(id);
+    // Get entity from the database and process it to return plain object
+    const entity = mongoDataAccessLayer.findByIdAsync(id).then((result) => {
+      const forGet = destructDAO(result);
 
-    // Destructuring to receive only wanted properties
-    const result = destructDAO(entity);
+      return forGet;
+    });
 
-    // Return the entity
-    return result;
+    // Return the plain data entity
+    return entity;
   };
 
   // Public API for request handlers
