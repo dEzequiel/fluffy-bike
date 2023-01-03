@@ -103,6 +103,12 @@ describe("Services testing", () => {
           contextObjectUnderTest
         )
       ).rejects.toThrow(Error.CastError);
+
+      await expect(
+        services.byciclesService.bycicleServiceApi.getByIdAsync(
+          contextObjectUnderTest
+        )
+      ).rejects.toHaveProperty("name", "CastError");
     });
   });
 });
