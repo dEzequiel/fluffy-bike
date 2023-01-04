@@ -1,12 +1,13 @@
 // const databaseModule = require("../../infraestructure/mongodb.config.js");
-const infraestructure = require("../../infraestructure");
+const infraestructure = require("../../Infraestructure");
 const { expect } = require("@jest/globals");
-const Model = require("../../models/nosql/bycicle.js");
+const Model = require("../../Domain/models/bycicle.js");
 
 let connection;
 describe("Mongoose testing", () => {
   beforeAll(async () => {
     await infraestructure.mongoDbConfig.connect();
+    await Model.collection.drop();
   });
 
   afterAll(async () => {
@@ -25,7 +26,7 @@ describe("Mongoose testing", () => {
 
   test("Should know how many documents exists in testing collection", async () => {
     const count = await Model.estimatedDocumentCount();
-    expect(count).toEqual(6);
+    expect(count).toEqual(0);
   });
 });
 

@@ -1,7 +1,7 @@
-const Model = require("../models/nosql/bycicle.js");
-const anyToJSON = require("../utils/toJSON.js");
+const Model = require("../../Domain/models/bycicle.js");
+const anyToJSON = require("../../Application/utils/toJSON.js");
 const mongoDataAccessLayer =
-  require("../infraestructure/data-access/mongo.bycicles.layer.js").MongoDataAccesApi;
+  require("../../Infraestructure/data-access/mongo.bycicles.layer.js").MongoDataAccesApi;
 
 ////// Module pattern
 const byciclesService = (function () {

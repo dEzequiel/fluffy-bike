@@ -1,4 +1,4 @@
-const Model = require("../../models/nosql/bycicle.js");
+const Model = require("../../Domain/models/bycicle.js");
 
 //
 const mongoDataAccessLayer = (function () {
@@ -10,7 +10,7 @@ const mongoDataAccessLayer = (function () {
           reject(err);
         } else {
           if (result === null) {
-            reject(`No document found with id: ${id}`)
+            reject(`No document found with id: ${id}`);
           }
           resolve(result);
         }

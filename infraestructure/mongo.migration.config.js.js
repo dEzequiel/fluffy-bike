@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 const mockedBycicles = require("../tests/byciclesForSeeding.js");
-const Model = require("../models/nosql/bycicle.js");
+const Model = require("../Domain/models/bycicle.js");
 const dotenv = require("dotenv");
 const { default: mongoose, mongo } = require("mongoose");
 dotenv.config();

@@ -1,7 +1,7 @@
 const { expect } = require("@jest/globals");
-const infraestructure = require("../../infraestructure");
-const Model = require("../../models/nosql/bycicle.js");
-const services = require("../../services/");
+const infraestructure = require("../../Infraestructure/");
+const Model = require("../../Domain/models/bycicle.js");
+const services = require("../../Application/services");
 const ObjectId = require("mongodb").ObjectId;
 
 let connection;
