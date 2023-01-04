@@ -1,10 +1,11 @@
 const { expect } = require("@jest/globals");
 const request = require("supertest");
 const app = require("../server.js");
-const databaseModule = require("../../infraestructure/mongodb.config.js");
+const infraestructure = require("../../infraestructure");
 const ObjectId = require("mongodb").ObjectId;
 const Model = require("../../Domain/models/bycicle.js");
-const infraestructure = require("../../Infraestructure/");
+const dataAccess = require("../../Infraestructure/data-access/mongo.bycicles.layer.js");
+const services = require("../../Application/services");
 
 // Usage of jest sintaxis
 // Assertions occurs inside promise callback
@@ -37,25 +38,6 @@ describe("Controllers testing", () => {
 
   test("GET /skeleton/:id should be mongo obj", async () => {
     // Arrange
-    const dataUnderTest = new Model({
-      _id: ObjectId("63b1db13b2ade9465c9c5d0d"),
-      name: "Roadster Elite",
-      brand: "Argon 18",
-      price: 1299.99,
-      type: "Road",
-      frame: "Carbon",
-      fork: "XC",
-      gears: "Derailleur gears",
-      brakes: "Hydraulic Disc",
-      wheels: "700c",
-      tires: "Road tires",
-      suspension: "Hardtail",
-      weight: 7.5,
-      available: true,
-    });
-
-    await dataUnderTest.save();
-
     const contextObjectUnderTest = {
       id: "63b1db13b2ade9465c9c5d0d",
       name: "Roadster Elite",
@@ -73,6 +55,10 @@ describe("Controllers testing", () => {
       available: true,
     };
 
+    const getByIdBycicleServiceMock = jest
+      .spyOn(services.byciclesService.bycicleServiceApi, "getByIdAsync")
+      .mockReturnValueOnce(contextObjectUnderTest);
+
     // Act and assert
     await request(app)
       .get(`/skeleton/${contextObjectUnderTest.id}`)
@@ -81,6 +67,9 @@ describe("Controllers testing", () => {
         // assertions
         console.log(res.body);
         expect(res.body).toEqual(contextObjectUnderTest);
+        expect(getByIdBycicleServiceMock).toHaveBeenLastCalledWith({
+          id: "63b1db13b2ade9465c9c5d0d",
+        });
       });
   });
 });
