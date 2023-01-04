@@ -74,7 +74,7 @@ describe("Services testing", () => {
         );
 
       // Assert
-      expect(result).toHaveProperty("name");
+      expect(Object.keys(result)).toEqual(Object.keys(contextObjectUnderTest));
     });
 
     test("Should return rejected promise with message becauses DAO was not found", async () => {
