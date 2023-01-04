@@ -3,11 +3,9 @@ const services = require("../../Application/services");
 
 ////// Module pattern
 const byciclesController = (function () {
-  const getById = async (req, res) => {
-    // Desacoplate the service from express
+  const getById = async (id) => {
     const contextObject = {
-      bycicle: req.bycicle,
-      id: req.params.id,
+      id: id,
     };
 
     // Await for the service response
@@ -17,7 +15,7 @@ const byciclesController = (function () {
       );
 
     // Return the response
-    return res.status(200).json(result);
+    return result
   };
 
   // Public API
