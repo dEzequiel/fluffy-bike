@@ -36,7 +36,7 @@ describe("Controllers testing", () => {
       });
   });
 
-  test("GET /skeleton/:id should be mongo obj", async () => {
+  test("GET /skeleton/:id Should return 200 with plain json objects", async () => {
     // Arrange
     const contextObjectUnderTest = {
       id: "63b1db13b2ade9465c9c5d0d",
@@ -65,11 +65,61 @@ describe("Controllers testing", () => {
       .expect(200)
       .then((res) => {
         // assertions
-        console.log(res.body);
         expect(res.body).toEqual(contextObjectUnderTest);
         expect(getByIdBycicleServiceMock).toHaveBeenLastCalledWith({
           id: "63b1db13b2ade9465c9c5d0d",
         });
+      });
+  });
+
+  test("GET /skeleton/getAll Should return 200 with list of plain json objects", async () => {
+    // Arrange
+    const contextObjectUnderTest = [
+      {
+        id: "63b1db13b2ade9465c9c5d0d",
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      },
+      {
+        id: "63b1db3211c382e5701713d0",
+        name: "Commuter Classic",
+        brand: "CUBE",
+        price: 749.99,
+        type: "Urban",
+        frame: "Steel",
+        fork: "Enduro",
+        gears: "Internal gear hub",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Commuter tires",
+        suspension: "Rigid",
+        weight: 9.5,
+        available: true,
+      },
+    ];
+
+    const getAllBycicleServiceMock = jest
+      .spyOn(services.byciclesService.bycicleServiceApi, "getAllAsync")
+      .mockReturnValueOnce(contextObjectUnderTest);
+
+    // Act and assert
+    await request(app)
+      .get(`/skeleton/getAll`)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toEqual(contextObjectUnderTest);
+        expect(getAllBycicleServiceMock).toHaveBeenCalled();
       });
   });
 });
