@@ -1,21 +1,21 @@
-const { expect } = require("@jest/globals");
-const infraestructure = require("../../Infraestructure/");
-const Model = require("../../Domain/models/bycicle.js");
-const services = require("../../Application/services");
+const database = require("../../database/");
+const Model = require("../../domain/models/bycicle.js");
+const services = require("../../services");
 const ObjectId = require("mongodb").ObjectId;
+const { expect } = require("@jest/globals");
 
 let connection;
 describe("Services testing", () => {
   beforeAll(async () => {
-    await infraestructure.mongoMigrationConfig.connect();
-    await infraestructure.mongoMigrationConfig.dropCollection();
+    await database.mongoMigrationConfig.connect();
+    await database.mongoMigrationConfig.dropCollection();
   });
 
   afterAll(async () => {
-    await infraestructure.mongoMigrationConfig.disconnect();
+    await database.mongoMigrationConfig.disconnect();
   });
 
-  connection = infraestructure.mongoMigrationConfig.getConnection();
+  connection = database.mongoMigrationConfig.getConnection();
 
   describe("Mongoose data access testing", () => {
     test("Should connect to database", async () => {

@@ -1,4 +1,4 @@
-const Model = require("../../Domain/models/bycicle.js");
+const Model = require("../../domain/models/bycicle.js");
 
 //
 const mongoDataAccessLayer = (function () {

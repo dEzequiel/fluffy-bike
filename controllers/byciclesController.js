@@ -1,5 +1,5 @@
-const services = require("../../Application/services");
-const ApiResponse = require("../../Application/utils/future-packages/ApiResponse");
+const services = require("../services").byciclesService;
+const ApiResponse = require("../utils/future-packages/ApiResponse");
 // Module pattern
 
 ////// Module pattern
@@ -11,10 +11,7 @@ const byciclesController = (function () {
     };
 
     // Await for the service response
-    const result =
-      await services.byciclesService.bycicleServiceApi.getByIdAsync(
-        contextObject
-      );
+    const result = await services.bycicleServiceApi.getByIdAsync(contextObject);
 
     // Return the response
     if (!result) {
@@ -29,7 +26,7 @@ const byciclesController = (function () {
   const getAll = async () => {
     let response;
     const result =
-      await services.byciclesService.bycicleServiceApi.getAllAsync();
+      await services.bycicleServiceApi.getAllAsync();
 
     // Return the response
     if (!result) {

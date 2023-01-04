@@ -10,6 +10,7 @@ const databaseModule = require("./infraestructure/mongodb.config.js");
   }
   // `Database` is not available here
 })();
+
 const express = require("express");
 var app = express();
 console.log("Express app running...");
@@ -19,7 +20,7 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
-const routes = require("./Adapters/routes");
+const routes = require("./routes");
 app.use(routes);
 
 module.exports = app;

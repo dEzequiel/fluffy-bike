@@ -1,26 +1,26 @@
 const { expect } = require("@jest/globals");
 const request = require("supertest");
 const app = require("../server.js");
-const infraestructure = require("../../infraestructure");
+const database = require("../../database");
 const ObjectId = require("mongodb").ObjectId;
-const Model = require("../../Domain/models/bycicle.js");
-const dataAccess = require("../../Infraestructure/data-access/mongo.bycicles.layer.js");
-const services = require("../../Application/services");
+const Model = require("../../domain/models/bycicle.js");
+const dataAccess = require("../../database/data-access/mongo.bycicles.layer.js");
+const services = require("../../services");
 
 // Usage of jest sintaxis
 // Assertions occurs inside promise callback
 let connection;
 describe("Controllers testing", () => {
   beforeAll(async () => {
-    await infraestructure.mongoMigrationConfig.connect();
-    await infraestructure.mongoMigrationConfig.dropCollection();
+    await database.mongoMigrationConfig.connect();
+    await database.mongoMigrationConfig.dropCollection();
   });
 
   afterAll(async () => {
-    await infraestructure.mongoMigrationConfig.disconnect();
+    await database.mongoMigrationConfig.disconnect();
   });
 
-  connection = infraestructure.mongoMigrationConfig.getConnection();
+  connection = database.mongoMigrationConfig.getConnection();
 
   test("GET /skeleton should be Hello World message", async () => {
     // Arrange
