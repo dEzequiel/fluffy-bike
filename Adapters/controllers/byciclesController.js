@@ -15,12 +15,20 @@ const byciclesController = (function () {
       );
 
     // Return the response
-    return result
+    return result;
+  };
+
+  const getAll = async () => {
+    const result =
+      await services.byciclesService.bycicleServiceApi.getAllAsync();
+
+    return result;
   };
 
   // Public API
   return {
     getById,
+    getAll,
   };
 })();
 
