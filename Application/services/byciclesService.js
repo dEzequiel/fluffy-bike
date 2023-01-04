@@ -8,7 +8,7 @@ const byciclesService = (function () {
   // Private API
   const getByIdAsync = async (contextObject) => {
     // Destructuring to receive only wanted properties
-    const { bycicle, id } = contextObject;
+    const { id } = contextObject;
 
     // Get entity from the database and process it to return plain object
     const entity = mongoDataAccessLayer.findByIdAsync(id).then((result) => {
