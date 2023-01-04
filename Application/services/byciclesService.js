@@ -20,9 +20,23 @@ const byciclesService = (function () {
     return entity;
   };
 
+  const getAllAsync = async () => {
+    const entities = mongoDataAccessLayer.findAllAsync().then((result) => {
+      const forGet = [];
+      result.forEach((res) => {
+        forGet.push(anyToJSON(res));
+      });
+
+      return forGet;
+    });
+
+    return entities;
+  };
+
   // Public API for request handlers
   return {
     getByIdAsync,
+    getAllAsync,
   };
 })();
 
