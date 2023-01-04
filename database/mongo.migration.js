@@ -2,6 +2,7 @@ const mockedBycicles = require("../tests/byciclesForSeeding.js");
 const Model = require("../domain/models/bycicle.js");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
 
 dotenv.config();
 
@@ -10,37 +11,6 @@ let db;
 let collection;
 
 const databaseMigrationModule = (function () {
-  async function connect() {
-    mongoose.set("strictQuery", true);
-    try {
-      await mongoose.connect(process.env.MONGO_URI_DEVELOPMENT, {
-        dbName: "BikehubDB",
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log("Connected to MongoDB");
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function disconnect() {
-    await mongoose.disconnect();
-  }
-
-  function getConnection() {
-    return mongoose.connection;
-  }
-
-  async function dropCollection() {
-    try {
-      await Model.collection.drop();
-      console.log("Collection dropped");
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   async function migrate() {
     client = new MongoClient(process.env.MONGO_URI_DEVELOPMENT);
     try {
@@ -68,11 +38,9 @@ const databaseMigrationModule = (function () {
   }
 
   return {
-    connect: connect,
-    disconnect: disconnect,
-    getConnection: getConnection,
-    dropCollection: dropCollection,
+    migrate: migrate,
   };
 })();
 
+databaseMigrationModule.migrate();
 module.exports = databaseMigrationModule;
