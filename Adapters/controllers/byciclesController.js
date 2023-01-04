@@ -1,9 +1,11 @@
 const services = require("../../Application/services");
+const ApiResponse = require("../../Application/utils/future-packages/ApiResponse");
 // Module pattern
 
 ////// Module pattern
 const byciclesController = (function () {
   const getById = async (id) => {
+    let response;
     const contextObject = {
       id: id,
     };
@@ -15,14 +17,28 @@ const byciclesController = (function () {
       );
 
     // Return the response
-    return result;
+    if (!result) {
+      response = new ApiResponse(false, 404, result);
+    } else {
+      response = new ApiResponse(true, 200, result);
+    }
+
+    return response;
   };
 
   const getAll = async () => {
+    let response;
     const result =
       await services.byciclesService.bycicleServiceApi.getAllAsync();
 
-    return result;
+    // Return the response
+    if (!result) {
+      response = new ApiResponse(false, 404, result);
+    } else {
+      response = new ApiResponse(true, 200, result);
+    }
+
+    return response;
   };
 
   // Public API
