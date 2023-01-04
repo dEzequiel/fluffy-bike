@@ -19,8 +19,26 @@ const mongoDataAccessLayer = (function () {
     return response;
   };
 
+  const findAllAsync = () => {
+    const response = new Promise((resolve, reject) => {
+      Model.find({}, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`Colection is empty`);
+          }
+          resolve(result);
+        }
+      });
+    });
+    return response;
+  };
+
   return {
     findByIdAsync,
+    findAllAsync,
   };
 })();
 
