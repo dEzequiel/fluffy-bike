@@ -1,8 +1,9 @@
-const { MongoClient } = require("mongodb");
 const mockedBycicles = require("../tests/byciclesForSeeding.js");
-const Model = require("../Domain/models/bycicle.js");
+const Model = require("../domain/models/bycicle.js");
 const dotenv = require("dotenv");
-const { default: mongoose, mongo } = require("mongoose");
+const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
+
 dotenv.config();
 
 let client;
@@ -10,6 +11,7 @@ let db;
 let collection;
 
 const databaseMigrationModule = (function () {
+
   async function connect() {
     mongoose.set("strictQuery", true);
     try {
@@ -23,7 +25,7 @@ const databaseMigrationModule = (function () {
       console.log(err);
     }
   }
-
+  
   async function disconnect() {
     await mongoose.disconnect();
   }
@@ -69,10 +71,13 @@ const databaseMigrationModule = (function () {
 
   return {
     connect: connect,
+    migrate: migrate,
     disconnect: disconnect,
     getConnection: getConnection,
     dropCollection: dropCollection,
+
   };
 })();
 
+databaseMigrationModule.migrate();
 module.exports = databaseMigrationModule;

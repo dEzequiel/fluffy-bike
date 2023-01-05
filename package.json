@@ -6,9 +6,9 @@
   "scripts": {
     "devstart": "cross-env NODE_ENV=development node ./bin/www",
     "start": "cross-env NODE_ENV=production node ./bin/wwwnode ./bin/www",
-    "migrate": "node ./infraestructure/mongoMigration.js",
+    "migrate": "cross-env NODE_ENV=development node ./database/mongo.migration.js",
     "test:watch": "cross-env NODE_ENV=development jest --watch",
-    "test": "npm run migrate && cross-env NODE_ENV=development jest --runInBand --detectOpenHandles --forceExit"
+    "test": "cross-env NODE_ENV=development jest --runInBand --detectOpenHandles --forceExit"
   },
   "repository": {
     "type": "git",
