@@ -1,28 +1,18 @@
 function Repository() {
   this._data = [];
-
-  Object.defineProperty(this, "getById", {
-    value: function (id) {
-      return this._data.find((item) => item.id === id);
-    },
-    writable: true,
-  });
-
-  Object.defineProperty(this, "getAll", {
-    value: function () {
-      return this._data;
-    },
-    writable: true,
-  });
 }
 
 Repository.prototype.add = function (item) {
   this._data.push(item);
 };
 
-Repository.prototype.get = function (id) {
+Repository.prototype.getById = function (id) {
   return this._data.find((item) => item.id === id);
 };
+
+Repository.prototype.getAll = function () {
+  return this._data;
+}
 
 Repository.prototype.update = function (id, item) {
   const index = this._data.findIndex((item) => item.id === id);
