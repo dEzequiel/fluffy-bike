@@ -7,6 +7,13 @@ function Repository() {
     },
     writable: true,
   });
+
+  Object.defineProperty(this, "getAll", {
+    value: function () {
+      return this._data;
+    },
+    writable: true,
+  });
 }
 
 Repository.prototype.add = function (item) {
@@ -15,10 +22,6 @@ Repository.prototype.add = function (item) {
 
 Repository.prototype.get = function (id) {
   return this._data.find((item) => item.id === id);
-};
-
-Repository.prototype.getAll = function () {
-  return this._data;
 };
 
 Repository.prototype.update = function (id, item) {
