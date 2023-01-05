@@ -13,6 +13,9 @@ let connection;
 describe("Controllers testing", () => {
   beforeAll(async () => {
     await database.mongoMigrationConfig.connect();
+  });
+
+  beforeEach(async () => {
     await database.mongoMigrationConfig.dropCollection();
   });
 
