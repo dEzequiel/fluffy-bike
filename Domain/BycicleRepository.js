@@ -1,12 +1,19 @@
 const Repository = require("./Repository");
 const Model = require("./models/bycicle.js");
 
-const base = new Repository();
-var bycicleRepository = Object.create(base);
-bycicleRepository = {
-  getById: async (id) => {
-    return await Model.findById(id);
-  },
-};
+class MongoRepository extends Repository {
+  constructor(model) {
+    super();
+    this.dataAccess = model;
+  }
 
-module.exports = bycicleRepository;
+  async getAll() {
+    return await Model.find();
+  }
+
+  async getById(id) {
+    return await this.dataAccess.findById(id);
+  }
+}
+
+module.exports = MongoRepository;
