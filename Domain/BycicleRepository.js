@@ -2,17 +2,57 @@ const Repository = require("./Repository");
 const Model = require("./models/bycicle.js");
 
 class MongoRepository extends Repository {
-  constructor(model) {
-    super();
-    this.dataAccess = model;
+  getAll() {
+    const response = new Promise((resolve, reject) => {
+      Model.find({}, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`Colection is empty`);
+          }
+          resolve(result);
+        }
+      });
+    });
+    return response;
   }
 
-  async getAll() {
-    return await Model.find();
+  getById(id) {
+    const response = new Promise((resolve, reject) => {
+      Model.findById(id, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with id: ${id}`);
+          }
+          resolve(result);
+        }
+      }); // Return plain js object instead of mongoose document
+    });
+
+    return response;
   }
 
-  async getById(id) {
-    return await this.dataAccess.findById(id);
+  getByBrand(brand) {
+    const response = new Promise((resolve, reject) => {
+      Model.find({ brand: brand }, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with brand: ${brand}`);
+          }
+          resolve(result);
+        }
+      }); // Return plain js object instead of mongoose document
+    });
+
+    return response;
   }
 }
 
