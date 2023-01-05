@@ -8,6 +8,9 @@ let connection;
 describe("Services testing", () => {
   beforeAll(async () => {
     await database.mongoMigrationConfig.connect();
+  });
+
+  beforeEach(async () => {
     await database.mongoMigrationConfig.dropCollection();
   });
 
@@ -103,6 +106,75 @@ describe("Services testing", () => {
           contextObjectUnderTest
         )
       ).rejects.toEqual(expectedMessage);
+    });
+
+    test("Should return object with properties base on founded DAO", async () => {
+      // Arrange
+      const dataUnderTest = [
+        new Model({
+          _id: ObjectId("63b1db13b2ade9465c9c5d0d"),
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        }),
+        new Model({
+          _id: ObjectId("63b6e2397a7ad5a41a3044b0"),
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        }),
+      ];
+
+      const expectedKeys = {
+        id: "63b6e2397a7ad5a41a3044b0",
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
+
+      await Model.insertMany(dataUnderTest);
+
+      // Act
+      const result =
+        await services.byciclesService.bycicleServiceApi.getAllAsync();
+
+      // Assert
+      expect(result.length).toBe(dataUnderTest.length);
+      expect(
+        result.forEach((doc) => {
+          expect(doc instanceof Object).toBeTruthy();
+        })
+      );
     });
   });
 });

@@ -9,15 +9,15 @@ describe("Bycicle repository should override prototype chain inherit methods", (
   test("Repository has own prototype methods", () => {
     // Arrange
     const sut = new Repository();
-    expect(sut.hasOwnProperty("getAll")).toBeTruthy();
-    expect(sut.hasOwnProperty("getById")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("getAll")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("getById")).toBeTruthy();
   });
 
-  test("BycicleRepository has own prototype methods", () => {
+  test("BycicleRepository dont have own prototype methods", () => {
     // Arrange
     const sut = new BycicleRepository();
-    expect(sut.hasOwnProperty("getAll")).toBeTruthy();
-    expect(sut.hasOwnProperty("getById")).toBeTruthy();
+    expect(sut.hasOwnProperty("getAll")).toBeFalsy();
+    expect(sut.hasOwnProperty("getById")).toBeFalsy();
   });
 
   test("BycicleRepository prototype has own prototype methods", () => {
@@ -55,7 +55,7 @@ describe("Bycicle repositorion implementation/integration tests", () => {
   describe("Bycicle repository implementation tests", () => {
     test("Should retrieve doc from collecion", async () => {
       // Arrange
-      const sut = new BycicleRepository();
+      const sut = new BycicleRepository(Model);
       const dataUnderTest = new Model({
         _id: ObjectId("63b1db13b2ade9465c9c5d0d"),
         name: "Roadster Elite",
@@ -94,8 +94,12 @@ describe("Bycicle repositorion implementation/integration tests", () => {
 
       // Act & assert
       const result = await sut.getById("63b1db13b2ade9465c9c5d0d");
-      console.log(result);
-      // expect(Object.keys(result)).toEqual(Object.keys(contextObjectUnderTest));
+      const resultModel = await Model.findById("63b1db13b2ade9465c9c5d0d");
+
+      expect(await Model.estimatedDocumentCount()).toBe(1);
+      expect(result).not.toBeNull();
+      expect(resultModel).not.toBeUndefined();
+      expect(result).not.toBeUndefined();
     });
   });
 });
