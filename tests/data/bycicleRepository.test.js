@@ -68,7 +68,7 @@ describe("BycicleRepository implementation/integration tests", () => {
     });
   });
 
-  describe("BycicleRrepository implementation tests", () => {
+  describe("BycicleRepository implementation tests", () => {
     test("Should retrieve doc from collecion with a given id", async () => {
       // Arrange
       const sut = new BycicleRepository(Model);
@@ -90,7 +90,7 @@ describe("BycicleRepository implementation/integration tests", () => {
       });
       await dataUnderTest.save();
 
-      // Act 
+      // Act
       const result = await sut.getById("63b1db13b2ade9465c9c5d0d");
 
       // Assert
@@ -307,6 +307,54 @@ describe("BycicleRepository implementation/integration tests", () => {
       expect(result).not.toBeNull();
       expect(result._id).not.toBeNull();
       expect(result._id).not.toBeUndefined();
+    });
+
+    test("Should add many docs to collection", async () => {
+      // Arrange
+      const sut = new BycicleRepository(Model);
+      const dataToAdd = [
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "All City",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+      ];
+
+      // Act
+      const result = await sut.addMany(dataToAdd);
+
+      // Assert
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(2);
+      result.forEach((doc) => {
+        expect(doc._id).not.toBeNull();
+        expect(doc._id).not.toBeUndefined();
+      });
     });
   });
 });
