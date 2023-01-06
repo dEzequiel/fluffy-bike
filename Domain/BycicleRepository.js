@@ -72,6 +72,53 @@ class MongoRepository extends Repository {
 
     return response;
   }
+
+  add(data) {
+    const {
+      name,
+      brand,
+      price,
+      type,
+      frame,
+      fork,
+      gears,
+      brakes,
+      wheels,
+      tires,
+      suspension,
+      weight,
+      available,
+    } = data;
+
+    const response = new Promise((resolve, reject) => {
+      const newDoc = new Model({
+        name,
+        brand,
+        price,
+        type,
+        frame,
+        fork,
+        gears,
+        brakes,
+        wheels,
+        tires,
+        suspension,
+        weight,
+        available,
+      });
+
+      newDoc.save((err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+
+    return response;
+  }
 }
 
 module.exports = MongoRepository;
