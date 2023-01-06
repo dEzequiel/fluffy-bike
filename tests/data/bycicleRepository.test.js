@@ -266,5 +266,33 @@ describe("Bycicle repositorion implementation/integration tests", () => {
         expectedMessage
       );
     });
+
+    test("Should add a doc to collection", async () => {
+      // Arrange
+      const sut = new BycicleRepository(Model);
+      const dataToAdd = {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
+
+      // Act
+      const result = await sut.add(dataToAdd);
+
+      // Assert
+      expect(result).not.toBeNull();
+      expect(result._id).not.toBeNull();
+      expect(result._id).not.toBeUndefined();
+    });
   });
 });
