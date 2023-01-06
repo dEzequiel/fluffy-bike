@@ -55,17 +55,28 @@ const databaseModule = (function () {
   async function disconnect() {
     await mongoose.disconnect();
   }
-  /** MODULE PATTERN
-   * Object properties pointing to functions
-   * returned inside this IIFE.
-   *
-   * Only this public attributes are available outside
-   * this module.
-   */
+
+  async function dropCollection() {
+    try {
+      getConnection().db.dropCollection("Testing");
+      console.log("Collection dropped");
+    } catch (err) {
+      console.log(err);
+    }
+
+    /** MODULE PATTERN
+     * Object properties pointing to functions
+     * returned inside this IIFE.
+     *
+     * Only this public attributes are available outside
+     * this module.
+     */
+  }
   return {
     connect: connect,
     getConnection: getConnection,
     disconnect: disconnect,
+    dropCollection: dropCollection,
   };
 })();
 

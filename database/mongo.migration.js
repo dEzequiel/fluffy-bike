@@ -1,14 +1,8 @@
-const mockedBycicles = require("../tests/byciclesForSeeding.js");
 const Model = require("../domain/models/bycicle.js");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const { MongoClient } = require("mongodb");
 
 dotenv.config();
-
-let client;
-let db;
-let collection;
 
 const databaseMigrationModule = (function () {
   async function connect() {
@@ -34,11 +28,23 @@ const databaseMigrationModule = (function () {
   }
 
   async function dropCollection() {
+    let list = getConnection()
+      .db.listCollections({
+        name: Model.collection.name,
+      })
+      .toArray();
+
     try {
-      await Model.collection.drop();
-      console.log("Collection dropped");
-    } catch (err) {
-      console.log(err);
+      if (list.length !== 0) {
+        await Model.collection.drop();
+        console.log("Collection dropped");
+      }
+    } catch (e) {
+      if (e.code === 26) {
+        console.log("namespace %s not found", Model.collection.name);
+      } else {
+        throw e;
+      }
     }
   }
 
