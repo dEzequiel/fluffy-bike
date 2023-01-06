@@ -5,32 +5,46 @@ const ObjectId = require("mongodb").ObjectId;
 const BycicleRepository = require("../../Domain/BycicleRepository.js");
 const Repository = require("../../Domain/Repository");
 
-describe("Bycicle repository should override prototype chain inherit methods", () => {
-  test("Repository has own prototype methods", () => {
+describe("BycicleRepository should override prototype chain inherit methods from Repository", () => {
+  test("Repository prototype has own methods", () => {
     // Arrange
     const sut = new Repository();
+
+    // Assert
     expect(sut.__proto__.hasOwnProperty("getAll")).toBeTruthy();
     expect(sut.__proto__.hasOwnProperty("getById")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("add")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("update")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("delete")).toBeTruthy();
   });
 
-  test("BycicleRepository dont have own prototype methods", () => {
+  test("BycicleRepository dont have own methods, they are inherit from prototype", () => {
     // Arrange
     const sut = new BycicleRepository();
+
+    // Assert
     expect(sut.hasOwnProperty("getAll")).toBeFalsy();
     expect(sut.hasOwnProperty("getById")).toBeFalsy();
+    expect(sut.hasOwnProperty("add")).toBeFalsy();
+    expect(sut.hasOwnProperty("update")).toBeFalsy();
+    expect(sut.hasOwnProperty("delete")).toBeFalsy();
   });
 
-  test("BycicleRepository prototype has own prototype methods", () => {
+  test("BycicleRepository prototype has own prototype methods implementation", () => {
     // Arrange
     const sut = new BycicleRepository(Model);
+
+    // Assert
     expect(sut.__proto__.hasOwnProperty("getAll")).toBeTruthy();
     expect(sut.__proto__.hasOwnProperty("getById")).toBeTruthy();
-    expect(sut.__proto__.hasOwnProperty("model")).toBeFalsy();
+    expect(sut.__proto__.hasOwnProperty("add")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("remove")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("getByBrand")).toBeTruthy();
   });
 });
 
 let connection;
-describe("Bycicle repositorion implementation/integration tests", () => {
+describe("BycicleRepository implementation/integration tests", () => {
   beforeAll(async () => {
     await database.mongoDbConfig.connect();
   });
@@ -46,7 +60,7 @@ describe("Bycicle repositorion implementation/integration tests", () => {
 
   describe("Connection testing", () => {
     test("Should connect to database", async () => {
-      expect(connection.readyState).toEqual(1); // Status connected. Not connecting, is different.
+      expect(connection.readyState).toEqual(1);
     });
 
     test("Model should use testing collection", async () => {
@@ -54,8 +68,8 @@ describe("Bycicle repositorion implementation/integration tests", () => {
     });
   });
 
-  describe("Bycicle repository implementation tests", () => {
-    test("Should retrieve doc from collecion", async () => {
+  describe("BycicleRrepository implementation tests", () => {
+    test("Should retrieve doc from collecion with a given id", async () => {
       // Arrange
       const sut = new BycicleRepository(Model);
       const dataUnderTest = new Model({
@@ -74,10 +88,9 @@ describe("Bycicle repositorion implementation/integration tests", () => {
         weight: 7.5,
         available: true,
       });
-
       await dataUnderTest.save();
 
-      // Act &
+      // Act 
       const result = await sut.getById("63b1db13b2ade9465c9c5d0d");
 
       // Assert
@@ -134,7 +147,8 @@ describe("Bycicle repositorion implementation/integration tests", () => {
       expect(result.length).toBe(2);
     });
 
-    test("Should retrieve all docs with same brand from collection", async () => {
+    test("Should retrieve all docs filtered with the same brand", async () => {
+      // Arrange
       const sut = new BycicleRepository(Model);
       const dataUnderTest = [
         new Model({
