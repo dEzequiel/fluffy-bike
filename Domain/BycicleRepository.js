@@ -1,7 +1,7 @@
 const Repository = require("./Repository");
 const Model = require("./models/bycicle.js");
 
-class MongoRepository extends Repository {
+class BycicleRepository extends Repository {
   getAll() {
     const response = new Promise((resolve, reject) => {
       Model.find({}, (err, result) => {
@@ -121,4 +121,4 @@ class MongoRepository extends Repository {
   }
 }
 
-module.exports = MongoRepository;
+module.exports = BycicleRepository;
