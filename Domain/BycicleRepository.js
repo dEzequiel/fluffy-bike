@@ -119,6 +119,21 @@ class BycicleRepository extends Repository {
 
     return response;
   }
+
+  addMany(data) {
+    const response = new Promise((resolve, reject) => {
+      Model.insertMany(data, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+
+    return response;
+  }
 }
 
 module.exports = BycicleRepository;
