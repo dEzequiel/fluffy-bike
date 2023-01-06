@@ -54,6 +54,24 @@ class MongoRepository extends Repository {
 
     return response;
   }
+
+  remove(id) {
+    const response = new Promise((resolve, reject) => {
+      Model.findByIdAndDelete(id, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with id: ${id}`);
+          }
+          resolve(result);
+        }
+      }); // Return plain js object instead of mongoose document
+    });
+
+    return response;
+  }
 }
 
 module.exports = MongoRepository;
