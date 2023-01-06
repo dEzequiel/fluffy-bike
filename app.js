@@ -1,15 +1,15 @@
 const databaseModule = require("./infraestructure/mongodb.config.js");
 
 //https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
-(async () => {
-  try {
-    const database = await databaseModule.connect();
-  } catch (e) {
-    console.log(e);
-    // Deal with the fact the chain failed
-  }
-  // `Database` is not available here
-})();
+// (async () => {
+//   try {
+//     const database = await databaseModule.connect();
+//   } catch (e) {
+//     console.log(e);
+//     // Deal with the fact the chain failed
+//   }
+//   // `Database` is not available here
+// })();
 
 const express = require("express");
 var app = express();
