@@ -77,32 +77,13 @@ describe("Bycicle repositorion implementation/integration tests", () => {
 
       await dataUnderTest.save();
 
-      const contextObjectUnderTest = {
-        id: "63b1db13b2ade9465c9c5d0d",
-        name: "Roadster Elite",
-        brand: "Argon 18",
-        price: 1299.99,
-        type: "Road",
-        frame: "Carbon",
-        fork: "XC",
-        gears: "Derailleur gears",
-        brakes: "Hydraulic Disc",
-        wheels: "700c",
-        tires: "Road tires",
-        suspension: "Hardtail",
-        weight: 7.5,
-        available: true,
-      };
-
       // Act &
       const result = await sut.getById("63b1db13b2ade9465c9c5d0d");
-      const resultModel = await Model.findById("63b1db13b2ade9465c9c5d0d");
 
       // Assert
-      expect(await Model.estimatedDocumentCount()).toBe(1);
       expect(result).not.toBeNull();
-      expect(resultModel).not.toBeUndefined();
       expect(result).not.toBeUndefined();
+      expect(result._id).toBeDefined();
     });
 
     test("Should retrieve all docs from collection", async () => {
@@ -230,10 +211,60 @@ describe("Bycicle repositorion implementation/integration tests", () => {
       // Assert
       expect(result).not.toBeNull();
       expect(result.length).toBe(2);
-      expect(result[0].brand).toBe("Argon 18");
       result.forEach((doc) => {
         expect(doc.brand).toBe("Argon 18");
       });
+    });
+
+    test("Should delete a doc from collection with given id", async () => {
+      // Arrange
+      const sut = new BycicleRepository(Model);
+      const expectedMessage = `No document found with id: 63b859b14552d7ff361a5be5`;
+      const dataUnderTest = [
+        new Model({
+          _id: ObjectId("63b859b14552d7ff361a5be5"),
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        }),
+        new Model({
+          _id: ObjectId("63b85961c2ad6d4b9048f7e1"),
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        }),
+      ];
+
+      await Model.insertMany(dataUnderTest);
+
+      // Act
+      const result = await sut.remove("63b859b14552d7ff361a5be5");
+
+      // Arrange
+      expect(result).not.toBeNull();
+      await expect(sut.remove("63b859b14552d7ff361a5be5")).rejects.toEqual(
+        expectedMessage
+      );
     });
   });
 });
