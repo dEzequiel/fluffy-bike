@@ -10,7 +10,7 @@ describe("Services testing", () => {
     await database.mongoMigrationConfig.connect();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await database.mongoMigrationConfig.dropCollection();
   });
 
@@ -21,11 +21,8 @@ describe("Services testing", () => {
   connection = database.mongoMigrationConfig.getConnection();
 
   describe("Mongoose data access testing", () => {
-    test("Should connect to database", async () => {
+    test("Should connect to database and use correct testing collection", async () => {
       expect(connection.readyState).toEqual(1); // Status connected. Not connecting, is different.
-    });
-
-    test("Model should use testing collection", async () => {
       expect(Model.collection.collectionName).toEqual("Testing");
     });
   });
