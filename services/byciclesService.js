@@ -1,37 +1,86 @@
-const anyToJSON = require("..//utils/toJSON.js");
-const MongoRepository = require("../Domain/BycicleRepository.js");
-const mongoDataAccessLayer =
-  require("../database/data-access/mongo.bycicles.layer.js").MongoDataAccesApi;
+const BycicleRepository = require("../domain/BycicleRepository.js");
 
-////// Module pattern
 const byciclesService = (function () {
-  // Private API
-  const repository = new MongoRepository();
+  const repository = new BycicleRepository();
+  let parser;
+
   const getByIdAsync = async (contextObject) => {
-    // Destructuring to receive only wanted properties
     const { id } = contextObject;
 
-    // Get entity from the database and process it to return plain object
     const entity = repository.getById(id).then((result) => {
-      const forGet = anyToJSON(result);
-      return forGet;
+      return parser(result);
     });
 
-    // Return the plain data entity
     return entity;
   };
 
   const getAllAsync = async () => {
     const entities = repository.getAll().then((result) => {
-      const forGet = [];
-      result.forEach((res) => {
-        forGet.push(anyToJSON(res));
+      const jsonEntities = [];
+      result.forEach((entity) => {
+        jsonEntities.push(parser(entity));
       });
 
-      return forGet;
+      return jsonEntities;
     });
 
     return entities;
+  };
+
+  // Private API for request handlers
+  parser = (any, options = {}) => {
+    const result = JSON.parse(JSON.stringify(any));
+    const {
+      _id,
+      name,
+      brand,
+      price,
+      type,
+      frame,
+      fork,
+      gears,
+      brakes,
+      wheels,
+      tires,
+      suspension,
+      weight,
+      available,
+    } = result;
+
+    const {
+      includeId = true,
+      includeName = true,
+      includeBrand = true,
+      includePrice = true,
+      includeType = true,
+      includeFrame = true,
+      includeFork = true,
+      includeGears = true,
+      includeBrakes = true,
+      includeWheels = true,
+      includeTires = true,
+      includeSuspension = true,
+      includeWeight = true,
+      includeAvailable = true, // Can this be default to true?
+    } = options;
+    // Return the entity desacoplated from the database object structure (DAO)
+
+    return {
+      ...{ id: includeId ? _id : undefined },
+      ...{ name: includeName ? name : undefined },
+      ...{ brand: includeBrand ? brand : undefined },
+      ...{ price: includePrice ? price : undefined },
+      ...{ type: includeType ? type : undefined },
+      ...{ frame: includeFrame ? frame : undefined },
+      ...{ fork: includeFork ? fork : undefined },
+      ...{ gears: includeGears ? gears : undefined },
+      ...{ brakes: includeBrakes ? brakes : undefined },
+      ...{ wheels: includeWheels ? wheels : undefined },
+      ...{ tires: includeTires ? tires : undefined },
+      ...{ suspension: includeSuspension ? suspension : undefined },
+      ...{ weight: includeWeight ? weight : undefined },
+      ...{ available: includeAvailable ? available : undefined },
+    };
   };
 
   // Public API for request handlers
