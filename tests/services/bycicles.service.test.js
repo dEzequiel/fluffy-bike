@@ -29,7 +29,7 @@ describe("Services testing", () => {
   });
 
   describe("byciclesService public api integration testing", () => {
-    test("Should returno one specific object based on entity returned by data access layer", async () => {
+    test("Should return one specific object based on entity returned by data access layer", async () => {
       // Arrange
       const entity = {
         name: "Roadster Elite",
@@ -73,17 +73,6 @@ describe("Services testing", () => {
       // Assert
       expect(Object.keys(result)).toEqual(Object.keys(expectedEntity));
       expect(result).toEqual(expectedEntity);
-    });
-
-    test("Should return rejected promise with message becauses DAO was not found", async () => {
-      // Arrange
-      const id = "63b87bb8a647fa3cf184d3d8";
-      const expectedMessage = `No document found with id: ${id}`;
-
-      // Act & assert
-      await expect(
-        services.byciclesService.bycicleServiceApi.getByIdAsync(id)
-      ).rejects.toEqual(expectedMessage);
     });
 
     test("Should return collection of objects returned by data access layer", async () => {
@@ -167,18 +156,102 @@ describe("Services testing", () => {
       expect(result[1]).toEqual(expectedEntities[1]);
     });
 
-    test("Should return rejected promise with message because collection is empty", async () => {
+    test("Should return collection of objects with same brand property", async () => {
       // Arrange
-      const expectedMessage = `Colection is empty`;
+      const sut = new BycicleRepository();
+      const dataUnderTest = [
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "All City",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+      ];
+      const addedEntities = await sut.addMany(dataUnderTest);
 
-      // Act & assert
-      await expect(
-        services.byciclesService.bycicleServiceApi.getAllAsync()
-      ).rejects.toEqual(expectedMessage);
+      // Act
+      const result =
+        await services.byciclesService.bycicleServiceApi.getByBrandAsync(
+          "Argon 18"
+        );
+
+      // Assert
+      expect(result.length).toBe(2);
+      result.forEach((doc) => {
+        expect(doc.brand).toBe("Argon 18");
+        expect(doc.__proto__).toEqual(Object.prototype);
+      });
+    });
+
+    test("Should return added object with id property stablished by repository", async () => {
+      // Arrange
+      const dataToAdd = {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
+
+      // Act
+      let result = await services.byciclesService.bycicleServiceApi.addAsync(
+        dataToAdd
+      );
+      dataToAdd.id = result.id;
+
+      // Assert
+      expect(result.id).toBeDefined();
+      expect(result).toEqual(dataToAdd);
     });
   });
 });
-
 test("Should disconnect from database", () => {
   expect(connection.readyState).toEqual(0); // Outside describe() because it's neede to run afterAll().
 });

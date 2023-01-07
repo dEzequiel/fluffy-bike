@@ -36,7 +36,15 @@ const byciclesService = (function () {
     });
 
     return entities;
-  }
+  };
+
+  const addAsync = async (entity) => {
+    const addedEntity = repository.add(entity).then((result) => {
+      return parser(result);
+    });
+
+    return addedEntity;
+  };
 
   // Private API for request handlers
   parser = (any, options = {}) => {
@@ -98,6 +106,8 @@ const byciclesService = (function () {
   return {
     getByIdAsync,
     getAllAsync,
+    getByBrandAsync,
+    addAsync,
   };
 })();
 
