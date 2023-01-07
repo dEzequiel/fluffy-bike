@@ -46,6 +46,14 @@ const byciclesService = (function () {
     return addedEntity;
   };
 
+  const deleteAsync = async (id) => {
+    const deletedEntity = repository.remove(id).then((result) => {
+      return parser(result);
+    });
+
+    return deletedEntity;
+  }
+
   // Private API for request handlers
   parser = (any, options = {}) => {
     const result = JSON.parse(JSON.stringify(any));
@@ -108,6 +116,7 @@ const byciclesService = (function () {
     getAllAsync,
     getByBrandAsync,
     addAsync,
+    deleteAsync,
   };
 })();
 

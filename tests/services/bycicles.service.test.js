@@ -250,6 +250,36 @@ describe("Services testing", () => {
       expect(result.id).toBeDefined();
       expect(result).toEqual(dataToAdd);
     });
+
+    test("Should return deleted object", async () => {
+      // Arrange
+      const dataToAdd = {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
+      const addedEntity = await repository.add(dataToAdd);
+
+      dataToAdd.id = addedEntity._id.toString();
+      // Act
+      const result =
+        await services.byciclesService.bycicleServiceApi.deleteAsync(
+          addedEntity._id
+        );
+
+      // Assert
+      expect(result).toEqual(dataToAdd);
+    });
   });
 });
 test("Should disconnect from database", () => {
