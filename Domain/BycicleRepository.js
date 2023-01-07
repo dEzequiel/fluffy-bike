@@ -9,7 +9,7 @@ class BycicleRepository extends Repository {
           console.error(err);
           reject(err);
         } else {
-          if (result === null) {
+          if (result.length === 0) {
             reject(`Colection is empty`);
           }
           resolve(result);
@@ -44,7 +44,7 @@ class BycicleRepository extends Repository {
           console.error(err);
           reject(err);
         } else {
-          if (result === null) {
+          if (result.length === 0) {
             reject(`No document found with brand: ${brand}`);
           }
           resolve(result);
