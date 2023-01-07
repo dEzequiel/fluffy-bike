@@ -1,5 +1,5 @@
 const Repository = require("./Repository");
-const Model = require("./models/bycicle.js");
+const Model = require("../../domain/models/bycicle.js");
 
 class BycicleRepository extends Repository {
   getAll() {

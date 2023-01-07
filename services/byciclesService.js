@@ -1,4 +1,4 @@
-const BycicleRepository = require("../domain/BycicleRepository.js");
+const BycicleRepository = require("../database/data-access/BycicleRepository.js");
 
 const byciclesService = (function () {
   const repository = new BycicleRepository();
@@ -52,7 +52,7 @@ const byciclesService = (function () {
     });
 
     return deletedEntity;
-  }
+  };
 
   // Private API for request handlers
   parser = (any, options = {}) => {

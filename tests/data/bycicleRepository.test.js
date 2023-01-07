@@ -2,8 +2,8 @@ const database = require("../../database");
 const Model = require("../../domain/models/bycicle.js");
 const { expect } = require("@jest/globals");
 const ObjectId = require("mongodb").ObjectId;
-const BycicleRepository = require("../../Domain/BycicleRepository.js");
-const Repository = require("../../Domain/Repository");
+const BycicleRepository = require("../../database/data-access/BycicleRepository.js");
+const Repository = require("../../database/data-access/Repository.js");
 
 describe("BycicleRepository should override prototype chain inherit methods from Repository", () => {
   test("Repository prototype has own methods", () => {

@@ -1,9 +1,9 @@
 const database = require("../../database/");
 const Model = require("../../domain/models/bycicle.js");
-const services = require("../../services");
+const services = require("../../services").byciclesService;
 const ObjectId = require("mongodb").ObjectId;
 const { expect } = require("@jest/globals");
-const BycicleRepository = require("../../Domain/BycicleRepository");
+const BycicleRepository = require("../../database/data-access/BycicleRepository");
 
 let connection;
 describe("Services testing", () => {
@@ -66,7 +66,7 @@ describe("Services testing", () => {
 
       // Act
       const result =
-        await services.byciclesService.bycicleServiceApi.getByIdAsync(
+        await services.bycicleServiceApi.getByIdAsync(
           addedEntity._id
         );
 
@@ -148,7 +148,7 @@ describe("Services testing", () => {
 
       // Act
       const result =
-        await services.byciclesService.bycicleServiceApi.getAllAsync();
+        await services.bycicleServiceApi.getAllAsync();
 
       // Assert
       expect(result.length).toBe(2);
@@ -210,7 +210,7 @@ describe("Services testing", () => {
 
       // Act
       const result =
-        await services.byciclesService.bycicleServiceApi.getByBrandAsync(
+        await services.bycicleServiceApi.getByBrandAsync(
           "Argon 18"
         );
 
@@ -241,7 +241,7 @@ describe("Services testing", () => {
       };
 
       // Act
-      let result = await services.byciclesService.bycicleServiceApi.addAsync(
+      let result = await services.bycicleServiceApi.addAsync(
         dataToAdd
       );
       dataToAdd.id = result.id;
@@ -273,7 +273,7 @@ describe("Services testing", () => {
       dataToAdd.id = addedEntity._id.toString();
       // Act
       const result =
-        await services.byciclesService.bycicleServiceApi.deleteAsync(
+        await services.bycicleServiceApi.deleteAsync(
           addedEntity._id
         );
 
