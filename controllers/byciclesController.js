@@ -25,8 +25,23 @@ const byciclesController = (function () {
 
   const getAll = async () => {
     let response;
-    const result =
-      await services.bycicleServiceApi.getAllAsync();
+    const result = await services.bycicleServiceApi.getAllAsync();
+
+    // Return the response
+    if (!result) {
+      response = new ApiResponse(false, 404, result);
+    } else {
+      response = new ApiResponse(true, 200, result);
+    }
+
+    return response;
+  };
+
+  const getByBrand = async (brand) => {
+    let response;
+
+    // Await for the service response
+    const result = await services.bycicleServiceApi.getByBrandAsync(brand);
 
     // Return the response
     if (!result) {
@@ -42,6 +57,7 @@ const byciclesController = (function () {
   return {
     getById,
     getAll,
+    getByBrand,
   };
 })();
 

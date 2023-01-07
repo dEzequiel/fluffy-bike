@@ -1,5 +1,5 @@
 const express = require("express");
-const controllers = require("../controllers");
+const controllers = require("../controllers").byciclesController;
 
 const router = express.Router();
 
@@ -13,8 +13,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/getAll", async (req, res) => {
-  const resource =
-    await controllers.byciclesController.bycicleControllerApi.getAll();
+  const resource = await controllers.bycicleControllerApi.getAll();
 
   const { statusCode, data } = resource;
   return res.status(statusCode).json(data);
@@ -23,8 +22,16 @@ router.get("/getAll", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
-  const resource =
-    await controllers.byciclesController.bycicleControllerApi.getById(id);
+  const resource = await controllers.bycicleControllerApi.getById(id);
+
+  const { statusCode, data } = resource;
+  return res.status(statusCode).json(data);
+});
+
+router.get("/brand/:brand", async (req, res) => {
+  const brand = req.params.brand;
+
+  const resource = await controllers.bycicleControllerApi.getByBrand(brand);
 
   const { statusCode, data } = resource;
   return res.status(statusCode).json(data);
