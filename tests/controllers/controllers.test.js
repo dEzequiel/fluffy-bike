@@ -1,15 +1,10 @@
 const { expect } = require("@jest/globals");
 const request = require("supertest");
 const app = require("../server.js");
+const services = require("../../services").byciclesService;
 const database = require("../../database");
-const ObjectId = require("mongodb").ObjectId;
-const Model = require("../../domain/models/bycicle.js");
-const dataAccess = require("../../database/data-access/mongo.bycicles.layer.js");
-const services = require("../../services");
-
 // Usage of jest sintaxis
 // Assertions occurs inside promise callback
-let connection;
 describe("Controllers testing", () => {
   beforeAll(async () => {
     await database.mongoMigrationConfig.connect();
@@ -23,15 +18,13 @@ describe("Controllers testing", () => {
     await database.mongoMigrationConfig.disconnect();
   });
 
-  connection = database.mongoMigrationConfig.getConnection();
-
   test("GET /skeleton should be Hello World message", async () => {
     // Arrange
     const expected = { message: "Hello World" };
 
     // Act and assert
     await request(app)
-      .get("/skeleton")
+      .get("/bycicles")
       .expect(200)
       .then((res) => {
         // assertions
@@ -39,7 +32,7 @@ describe("Controllers testing", () => {
       });
   });
 
-  test("GET /skeleton/:id Should return 200 with plain json objects", async () => {
+  test("GET /bycicles/:id Should return 200 with plain json object", async () => {
     // Arrange
     const contextObjectUnderTest = {
       id: "63b1db13b2ade9465c9c5d0d",
@@ -59,12 +52,12 @@ describe("Controllers testing", () => {
     };
 
     const getByIdBycicleServiceMock = jest
-      .spyOn(services.byciclesService.bycicleServiceApi, "getByIdAsync")
+      .spyOn(services.bycicleServiceApi, "getByIdAsync")
       .mockReturnValueOnce(contextObjectUnderTest);
 
     // Act and assert
     await request(app)
-      .get(`/skeleton/${contextObjectUnderTest.id}`)
+      .get(`/bycicles/${contextObjectUnderTest.id}`)
       .expect(200)
       .then((res) => {
         // assertions
@@ -75,7 +68,7 @@ describe("Controllers testing", () => {
       });
   });
 
-  test("GET /skeleton/getAll Should return 200 with list of plain json objects", async () => {
+  test("GET /bycicles/getAll Should return 200 with list of plain json objects", async () => {
     // Arrange
     const contextObjectUnderTest = [
       {
@@ -113,12 +106,12 @@ describe("Controllers testing", () => {
     ];
 
     const getAllBycicleServiceMock = jest
-      .spyOn(services.byciclesService.bycicleServiceApi, "getAllAsync")
+      .spyOn(services.bycicleServiceApi, "getAllAsync")
       .mockReturnValueOnce(contextObjectUnderTest);
 
     // Act and assert
     await request(app)
-      .get(`/skeleton/getAll`)
+      .get(`/bycicles/getAll`)
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual(contextObjectUnderTest);
