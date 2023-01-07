@@ -3,6 +3,9 @@ const request = require("supertest");
 const app = require("../server.js");
 const services = require("../../services").byciclesService;
 const database = require("../../database");
+const repository = require("../../database/data-access/BycicleRepository.js");
+const BycicleRepository = require("../../database/data-access/BycicleRepository.js");
+
 // Usage of jest sintaxis
 // Assertions occurs inside promise callback
 describe("Controllers testing", () => {
@@ -70,9 +73,9 @@ describe("Controllers testing", () => {
 
   test("GET /bycicles/getAll Should return 200 with list of plain json objects", async () => {
     // Arrange
-    const contextObjectUnderTest = [
+    const repository = new BycicleRepository();
+    const dataUnderTest = [
       {
-        id: "63b1db13b2ade9465c9c5d0d",
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -88,34 +91,110 @@ describe("Controllers testing", () => {
         available: true,
       },
       {
-        id: "63b1db3211c382e5701713d0",
-        name: "Commuter Classic",
-        brand: "CUBE",
-        price: 749.99,
-        type: "Urban",
-        frame: "Steel",
-        fork: "Enduro",
-        gears: "Internal gear hub",
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
         brakes: "Hydraulic Disc",
         wheels: "700c",
-        tires: "Commuter tires",
-        suspension: "Rigid",
-        weight: 9.5,
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      },
+      {
+        name: "Roadster Elite",
+        brand: "All City",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
         available: true,
       },
     ];
-
-    const getAllBycicleServiceMock = jest
-      .spyOn(services.bycicleServiceApi, "getAllAsync")
-      .mockReturnValueOnce(contextObjectUnderTest);
+    await repository.addMany(dataUnderTest);
+    const serviceResponse = await services.bycicleServiceApi.getAllAsync();
 
     // Act and assert
     await request(app)
       .get(`/bycicles/getAll`)
       .expect(200)
       .then((res) => {
-        expect(res.body).toEqual(contextObjectUnderTest);
-        expect(getAllBycicleServiceMock).toHaveBeenCalled();
+        expect(res.body).toEqual(serviceResponse);
+      });
+  });
+
+  test("GET /bycicles/brand/:brand Should return 200 with list of plain json objects", async () => {
+    // Arrange
+    const repository = new BycicleRepository();
+    const dataUnderTest = [
+      {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      },
+      {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      },
+      {
+        name: "Roadster Elite",
+        brand: "All City",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      },
+    ];
+    await repository.addMany(dataUnderTest);
+    const brand = "Argon 18";
+    const serviceResponse = await services.bycicleServiceApi.getByBrandAsync(
+      "Argon 18"
+    );
+
+    // Act & assert
+    await request(app)
+      .get(`/bycicles/brand/${brand}`)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toEqual(serviceResponse);
       });
   });
 });
