@@ -269,7 +269,7 @@ describe("BycicleRepository implementation/integration tests", () => {
         }),
       ];
 
-      await Model.insertMany(dataUnderTest);
+      await sut.addMany(dataUnderTest);
 
       // Act
       const result = await sut.remove("63b859b14552d7ff361a5be5");
@@ -355,6 +355,115 @@ describe("BycicleRepository implementation/integration tests", () => {
         expect(doc._id).not.toBeNull();
         expect(doc._id).not.toBeUndefined();
       });
+    });
+
+    test("Should return collection of DAO filtered by brand", async () => {
+      // Arrange
+      const sut = new BycicleRepository();
+      const dataUnderTest = [
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "All City",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+      ];
+
+      const addedEntities = await sut.addMany(dataUnderTest);
+      // Act
+      const result = await sut.getByBrand("Argon 18");
+
+      // Assert
+      expect(result.length).toBe(2);
+      expect(result[0]._id.toString()).toEqual(addedEntities[0]._id.toString());
+      expect(result[1]._id.toString()).toEqual(addedEntities[1]._id.toString());
+    });
+
+    test("Should return rejected promise with message because entities were found", async () => {
+      // Arrange
+      const sut = new BycicleRepository();
+      const brand = "Argon 18";
+      const expectedMessage = `No document found with brand: ${brand}`;
+
+      // Act & assert
+      await expect(sut.getByBrand("Argon 18")).rejects.toEqual(expectedMessage);
+    });
+
+    test("Should delete entity from collection via id", async () => {
+      // Arrange
+      const sut = new BycicleRepository();
+      const dataUnderTest = {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
+      const addedEntity = await sut.add(dataUnderTest);
+      const id = addedEntity._id.toString();
+
+      // Act
+      const result = await sut.remove(id);
+
+      // Assert
+      expect(result).not.toBeNull();
+      expect(result._id.toString()).toEqual(id);
+    });
+
+    test("Sould reject promise because entity to remove was not found", async () => {
+      // Arrange
+      const sut = new BycicleRepository();
+      const id = "63b992871d47bc3d793d53d9";
+      const expectedMessage = `No document found with id: ${id}`;
+      // Act & assert
+      await expect(sut.remove(id)).rejects.toEqual(expectedMessage);
     });
   });
 });
