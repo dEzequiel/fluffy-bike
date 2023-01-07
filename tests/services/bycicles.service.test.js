@@ -3,6 +3,7 @@ const Model = require("../../domain/models/bycicle.js");
 const services = require("../../services");
 const ObjectId = require("mongodb").ObjectId;
 const { expect } = require("@jest/globals");
+const BycicleRepository = require("../../Domain/BycicleRepository");
 
 let connection;
 describe("Services testing", () => {
@@ -19,20 +20,18 @@ describe("Services testing", () => {
   });
 
   connection = database.mongoMigrationConfig.getConnection();
-
-  describe("Mongoose data access testing", () => {
+  const repository = new BycicleRepository();
+  describe("Connection testing", () => {
     test("Should connect to database and use correct testing collection", async () => {
       expect(connection.readyState).toEqual(1); // Status connected. Not connecting, is different.
       expect(Model.collection.collectionName).toEqual("Testing");
     });
   });
 
-  // Testing unit
-  describe("Services public API testing", () => {
-    test("Should return object with properties base on founded DAO", async () => {
+  describe("byciclesService public api integration testing", () => {
+    test("Should returno one specific object based on entity returned by data access layer", async () => {
       // Arrange
-      const dataUnderTest = new Model({
-        _id: ObjectId("63b1db13b2ade9465c9c5d0d"),
+      const entity = {
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -46,12 +45,10 @@ describe("Services testing", () => {
         suspension: "Hardtail",
         weight: 7.5,
         available: true,
-      });
-
-      await dataUnderTest.save();
-
-      const contextObjectUnderTest = {
-        id: "63b1db13b2ade9465c9c5d0d",
+      };
+      const addedEntity = await repository.add(entity);
+      const expectedEntity = {
+        id: addedEntity._id.toString(),
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -70,46 +67,29 @@ describe("Services testing", () => {
       // Act
       const result =
         await services.byciclesService.bycicleServiceApi.getByIdAsync(
-          contextObjectUnderTest
+          addedEntity._id
         );
 
       // Assert
-      expect(Object.keys(result)).toEqual(Object.keys(contextObjectUnderTest));
+      expect(Object.keys(result)).toEqual(Object.keys(expectedEntity));
+      expect(result).toEqual(expectedEntity);
     });
 
     test("Should return rejected promise with message becauses DAO was not found", async () => {
       // Arrange
-      const contextObjectUnderTest = {
-        // _id: "63b4884296131f5d3445cad9",
-        name: "Roadster Elite",
-        brand: "Argon 18",
-        price: 1299.99,
-        type: "Road",
-        frame: "Carbon",
-        fork: "XC",
-        gears: "Derailleur gears",
-        brakes: "Hydraulic Disc",
-        wheels: "700c",
-        tires: "Road tires",
-        suspension: "Hardtail",
-        weight: 7.5,
-        available: true,
-      };
-      const expectedMessage = `No document found with id: ${contextObjectUnderTest.id}`;
+      const id = "63b87bb8a647fa3cf184d3d8";
+      const expectedMessage = `No document found with id: ${id}`;
 
-      //Act & assert
+      // Act & assert
       await expect(
-        services.byciclesService.bycicleServiceApi.getByIdAsync(
-          contextObjectUnderTest
-        )
+        services.byciclesService.bycicleServiceApi.getByIdAsync(id)
       ).rejects.toEqual(expectedMessage);
     });
 
-    test("Should return object with properties base on founded DAO", async () => {
+    test("Should return collection of objects returned by data access layer", async () => {
       // Arrange
       const dataUnderTest = [
-        new Model({
-          _id: ObjectId("63b1db13b2ade9465c9c5d0d"),
+        {
           name: "Roadster Elite",
           brand: "Argon 18",
           price: 1299.99,
@@ -123,9 +103,8 @@ describe("Services testing", () => {
           suspension: "Hardtail",
           weight: 7.5,
           available: true,
-        }),
-        new Model({
-          _id: ObjectId("63b6e2397a7ad5a41a3044b0"),
+        },
+        {
           name: "Roadster Elite",
           brand: "Argon 18",
           price: 1299.99,
@@ -139,38 +118,133 @@ describe("Services testing", () => {
           suspension: "Hardtail",
           weight: 7.5,
           available: true,
-        }),
+        },
       ];
+      const addedEntities = await repository.addMany(dataUnderTest);
 
-      const expectedKeys = {
-        id: "63b6e2397a7ad5a41a3044b0",
-        name: "Roadster Elite",
-        brand: "Argon 18",
-        price: 1299.99,
-        type: "Road",
-        frame: "Carbon",
-        fork: "XC",
-        gears: "Derailleur gears",
-        brakes: "Hydraulic Disc",
-        wheels: "700c",
-        tires: "Road tires",
-        suspension: "Hardtail",
-        weight: 7.5,
-        available: true,
-      };
-
-      await Model.insertMany(dataUnderTest);
+      const expectedEntities = [
+        {
+          id: addedEntities[0]._id.toString(),
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          id: addedEntities[1]._id.toString(),
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+      ];
 
       // Act
       const result =
         await services.byciclesService.bycicleServiceApi.getAllAsync();
 
       // Assert
-      expect(result.length).toBe(dataUnderTest.length);
-      expect(
-        result.forEach((doc) => {
-          expect(doc instanceof Object).toBeTruthy();
-        })
+      expect(result.length).toBe(2);
+      expect(result[0]).toEqual(expectedEntities[0]);
+      expect(result[1]).toEqual(expectedEntities[1]);
+    });
+
+    test("Should return rejected promise with message because collection is empty", async () => {
+      // Arrange
+      const expectedMessage = `Colection is empty`;
+
+      // Act & assert
+      await expect(
+        services.byciclesService.bycicleServiceApi.getAllAsync()
+      ).rejects.toEqual(expectedMessage);
+    });
+
+    test("Should return collection of DAO filtered by brand", async () => {
+      // Arrange
+      const dataUnderTest = [
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "Argon 18",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+        {
+          name: "Roadster Elite",
+          brand: "All City",
+          price: 1299.99,
+          type: "Road",
+          frame: "Carbon",
+          fork: "XC",
+          gears: "Derailleur gears",
+          brakes: "Hydraulic Disc",
+          wheels: "700c",
+          tires: "Road tires",
+          suspension: "Hardtail",
+          weight: 7.5,
+          available: true,
+        },
+      ];
+
+      const addedEntities = await repository.addMany(dataUnderTest);
+      // Act
+      const result = await repository.getByBrand("Argon 18");
+
+      // Assert
+      expect(result.length).toBe(2);
+      expect(result[0]._id.toString()).toEqual(addedEntities[0]._id.toString());
+      expect(result[1]._id.toString()).toEqual(addedEntities[1]._id.toString());
+    });
+
+    test("Should return rejected promise with message because entities were found", async () => {
+      // Arrange
+      const brand = "Argon 18";
+      const expectedMessage = `No document found with brand: ${brand}`;
+
+      // Act & assert
+      await expect(repository.getByBrand("Argon 18")).rejects.toEqual(
+        expectedMessage
       );
     });
   });

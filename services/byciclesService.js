@@ -4,9 +4,7 @@ const byciclesService = (function () {
   const repository = new BycicleRepository();
   let parser;
 
-  const getByIdAsync = async (contextObject) => {
-    const { id } = contextObject;
-
+  const getByIdAsync = async (id) => {
     const entity = repository.getById(id).then((result) => {
       return parser(result);
     });
@@ -26,6 +24,19 @@ const byciclesService = (function () {
 
     return entities;
   };
+
+  const getByBrandAsync = async (brand) => {
+    const entities = repository.getByBrand(brand).then((result) => {
+      const jsonEntities = [];
+      result.forEach((entity) => {
+        jsonEntities.push(parser(entity));
+      });
+
+      return jsonEntities;
+    });
+
+    return entities;
+  }
 
   // Private API for request handlers
   parser = (any, options = {}) => {
