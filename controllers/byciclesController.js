@@ -53,11 +53,25 @@ const byciclesController = (function () {
     return response;
   };
 
+  const addBycicle = async (data) => {
+    let response;
+
+    const result = await services.bycicleServiceApi.addAsync(data);
+
+    if(!result) {
+      response = new ApiResponse(false, 404, result);
+    }
+
+    response = new ApiResponse(true, 201, result);
+    return response
+  };
+
   // Public API
   return {
     getById,
     getAll,
     getByBrand,
+    addBycicle
   };
 })();
 
