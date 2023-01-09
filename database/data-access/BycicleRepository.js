@@ -9,7 +9,7 @@ class BycicleRepository extends Repository {
           console.error(err);
           reject(err);
         } else {
-          if (result.length === 0) {
+          if (result === null) {
             reject(`Colection is empty`);
           }
           resolve(result);
