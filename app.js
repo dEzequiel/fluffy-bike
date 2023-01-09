@@ -1,5 +1,3 @@
-const databaseModule = require("./infraestructure/mongodb.config.js");
-
 //https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
 // (async () => {
 //   try {
@@ -14,6 +12,7 @@ const databaseModule = require("./infraestructure/mongodb.config.js");
 const express = require("express");
 var app = express();
 console.log("Express app running...");
+
 
 app.use(express.json());
 

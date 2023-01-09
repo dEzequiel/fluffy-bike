@@ -1,6 +1,7 @@
-// Basically it removes all the create and start server code 
+// Basically it removes all the create and start server code
 // from your app.js and let you focus only on the application logic part
 
+const { swaggerDocs: V1SwaggerDocs } = require("../swagger.js");
 const app = require("../app");
 const http = require("http");
 
@@ -12,4 +13,7 @@ app.set("port", port);
 const server = http.createServer(app);
 
 // Listen on provided port, on all network interfaces.
-server.listen(port);
+server.listen(port, () => {
+  console.log(`API is listening on port ${port}`);
+  V1SwaggerDocs(app, port);
+});
