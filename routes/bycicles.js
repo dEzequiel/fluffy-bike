@@ -8,28 +8,10 @@ const router = express.Router();
 // The routes you define are matched sequentially in the
 // order they are defined. Hence,your second routing setup is correct.
 
-/**
- * @openapi
- * /bycicles:
- *   get:
- *     description: Welcome to fluffy bike API!
- *     responses:
- *       200:
- *         description: Returns a hello world message.
- */
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   res.send({ message: "Hello World" });
 });
 
-/**
- * @openapi
- * /bycicles/getAll:
- *   get:
- *     description: Endpoint to get all bycicles.
- *     responses:
- *       200:
- *         description: Returns all bycicles.
- */
 router.get("/getAll", async (req, res) => {
   const resource = await controllers.bycicleControllerApi.getAll();
 
