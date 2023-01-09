@@ -1,18 +1,9 @@
-//https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
-// (async () => {
-//   try {
-//     const database = await databaseModule.connect();
-//   } catch (e) {
-//     console.log(e);
-//     // Deal with the fact the chain failed
-//   }
-//   // `Database` is not available here
-// })();
-
 const express = require("express");
+const YAML = require("yamljs");
+const swaggerUi = require("swagger-ui-express");
+
 var app = express();
 console.log("Express app running...");
-
 
 app.use(express.json());
 
@@ -21,5 +12,11 @@ app.use(cors());
 
 const routes = require("./routes");
 app.use(routes);
+
+const swaggerDocument = YAML.load("api-doc.yaml");
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const mongoConnection = require("./database/mongodb.config.js");
+mongoConnection.connect();
 
 module.exports = app;
