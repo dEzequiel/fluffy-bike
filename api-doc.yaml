@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Fluffly Bike API
+  description: A simple API build in Express and Node.js using Mongoose.
+  version: 1.0.0
+
+paths:
+  /bycicles:
+    get:
+      tags:
+        - Test
+      summary: Welcome message
+      description: This resource returns a welcome message, testing purposes
+      operationId: getWelcomeMessage
+      responses:
+        "200":
+          description: Sucessful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Welcome"
+                description: The welcome message.
+
+  /bycicles/getAll:
+    get:
+      tags:
+        - Bycicles
+      summary: Get all bycicles.
+      description: This resource returns all bycicles stored in database.
+      operationId: getAllBycicles
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bycicle"
+              example:
+                [
+                  {
+                    id: "63b1db13b2ade9465c9c5d0d",
+                    name: "Roadster Elite",
+                    brand: "Argon 18",
+                    price: 1299.99,
+                    type: "Road",
+                    frame: "Carbon",
+                    fork: "XC",
+                    gears: "Derailleur gears",
+                    brakes: "Hydraulic Disc",
+                    wheels: "700c",
+                    tires: "Road tires",
+                    suspension: "Hardtail",
+                    weight: 7.5,
+                    available: true,
+                  },
+                  {
+                    id: "5f3d3b8aa2bcfd321e1c9d66",
+                    name: "Mountain Monster",
+                    brand: "Bulls",
+                    price: 999.99,
+                    type: "Mountain",
+                    frame: "Aluminium",
+                    fork: "Trail",
+                    gears: "Derailleur gears",
+                    brakes: "Mechanical Disc",
+                    wheels: "27.5",
+                    tires: "Mountain bike tires",
+                    suspension: "Full",
+                    weight: 12.5,
+                    available: false,
+                  },
+                  {
+                    id: "63b1db3211c382e5701713d0",
+                    name: "Commuter Classic",
+                    brand: "CUBE",
+                    price: 749.99,
+                    type: "Urban",
+                    frame: "Steel",
+                    fork: "Enduro",
+                    gears: "Internal gear hub",
+                    brakes: "Hydraulic Disc",
+                    wheels: "700c",
+                    tires: "Commuter tires",
+                    suspension: "Rigid",
+                    weight: 9.5,
+                    available: true,
+                  },
+                ]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "5XX":
+          description: Some internal error occurr.
+
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Unauthorized to acces this resource.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Welcome:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The welcome message.
+
+    Bycicle:
+      type: object
+      properties:
+        name:
+          type: string
+        brand:
+          type: string
+        price:
+          type: number
+        type:
+          type: string
+        frame:
+          type: string
+        fork:
+          type: string
+        gears:
+          type: string
+        brakes:
+          type: string
+        wheels:
+          type: string
+        tires:
+          type: string
+        suspension:
+          type: string
+        weight:
+          type: number
+        available:
+          type: boolean
+
+      schemas:
+
+    # Schema for error response body
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
