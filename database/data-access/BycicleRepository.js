@@ -89,7 +89,7 @@ class BycicleRepository extends Repository {
       suspension,
       weight,
       available,
-    } = data;
+    } = data || {};
 
     const response = new Promise((resolve, reject) => {
       const newDoc = new Model({
