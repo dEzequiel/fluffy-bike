@@ -1,5 +1,6 @@
 const Repository = require("./Repository");
 const Model = require("../../domain/models/bycicle.js");
+const ObjectId = require("mongodb").ObjectId;
 
 class BycicleRepository extends Repository {
   getAll() {
@@ -21,7 +22,7 @@ class BycicleRepository extends Repository {
 
   getById(id) {
     const response = new Promise((resolve, reject) => {
-      Model.findById(id, (err, result) => {
+      Model.findById(ObjectId(id), (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
