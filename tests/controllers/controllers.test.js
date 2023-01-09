@@ -231,4 +231,38 @@ describe("Controllers testing", () => {
         expect(res.body).toEqual(expect.objectContaining(dataUnderTest));
       });
   });
+
+  test("DELETE /bycicles Should return 200 with delated entity", async () => {
+    // Arrange
+    const repository = new BycicleRepository();
+    const contextObjectUnderTest = {
+      name: "Roadster Elite",
+      brand: "Argon 18",
+      price: 1299.99,
+      type: "Road",
+      frame: "Carbon",
+      fork: "XC",
+      gears: "Derailleur gears",
+      brakes: "Hydraulic Disc",
+      wheels: "700c",
+      tires: "Road tires",
+      suspension: "Hardtail",
+      weight: 7.5,
+      available: true,
+    };
+
+    const addedEntity = await repository.add(contextObjectUnderTest);
+    const serviceResponse = await services.bycicleServiceApi.getByIdAsync(
+      addedEntity._id
+    );
+
+    // Act & assert
+    await request(app)
+      .delete(`/bycicles/id/${addedEntity._id}`)
+      .expect(200)
+      .expect("Content-Type", /json/)
+      .then((res) => {
+        expect(res.body).toEqual(serviceResponse);
+      });
+  });
 });

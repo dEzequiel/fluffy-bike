@@ -58,12 +58,23 @@ const byciclesController = (function () {
 
     const result = await services.bycicleServiceApi.addAsync(data);
 
-    if(!result) {
+    if (!result) {
       response = new ApiResponse(false, 404, result);
     }
 
     response = new ApiResponse(true, 201, result);
-    return response
+    return response;
+  };
+
+  const deleteBycicle = async (id) => {
+    let response;
+
+    const result = await services.bycicleServiceApi.deleteAsync(id);
+
+    if (!result) response = new ApiResponse(false, 404, result);
+
+    response = new ApiResponse(true, 200, result);
+    return response;
   };
 
   // Public API
@@ -71,7 +82,8 @@ const byciclesController = (function () {
     getById,
     getAll,
     getByBrand,
-    addBycicle
+    addBycicle,
+    deleteBycicle,
   };
 })();
 

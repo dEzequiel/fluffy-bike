@@ -17,6 +17,15 @@ router.post("/", async (req, res) => {
   return res.status(statusCode).json(data);
 });
 
+router.delete("/id/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const resource = await controllers.bycicleControllerApi.deleteBycicle(id);
+
+  const { statusCode, data } = resource;
+  return res.status(statusCode).json(data);
+});
+
 router.get("/", async (req, res) => {
   res.send({ message: "Hello World" });
 });
