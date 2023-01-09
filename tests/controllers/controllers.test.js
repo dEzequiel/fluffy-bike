@@ -29,6 +29,7 @@ describe("Controllers testing", () => {
     await request(app)
       .get("/bycicles")
       .expect(200)
+      .expect("Content-Type", /json/)
       .then((res) => {
         // assertions
         expect(res.body).toEqual(expected);
@@ -195,8 +196,39 @@ describe("Controllers testing", () => {
     await request(app)
       .get(`/bycicles/brand/${brand}`)
       .expect(200)
+      .expect("Content-Type", /json/)
       .then((res) => {
         expect(res.body).toEqual(serviceResponse);
+      });
+  });
+
+  test("POST /bycicles Should return 201 with created entity", async () => {
+    // Arrange
+    const dataUnderTest = {
+      name: "Roadster Elite",
+      brand: "Argon 18",
+      price: 1299.99,
+      type: "Road",
+      frame: "Carbon",
+      fork: "XC",
+      gears: "Derailleur gears",
+      brakes: "Hydraulic Disc",
+      wheels: "700c",
+      tires: "Road tires",
+      suspension: "Hardtail",
+      weight: 7.5,
+      available: true,
+    };
+
+    // Act & assert
+    await request(app)
+      .post(`/bycicles`)
+      .send(dataUnderTest)
+      .expect(201)
+      .expect("Content-Type", /json/)
+      .then((res) => {
+        expect(res.body.id).toBeDefined();
+        expect(res.body).toEqual(expect.objectContaining(dataUnderTest));
       });
   });
 });
