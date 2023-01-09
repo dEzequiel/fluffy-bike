@@ -37,8 +37,8 @@ describe("Controllers testing", () => {
 
   test("GET /bycicles/:id Should return 200 with plain json object", async () => {
     // Arrange
+    const repository = new BycicleRepository();
     const contextObjectUnderTest = {
-      id: "63b1db13b2ade9465c9c5d0d",
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -54,20 +54,22 @@ describe("Controllers testing", () => {
       available: true,
     };
 
-    const getByIdBycicleServiceMock = jest
-      .spyOn(services.bycicleServiceApi, "getByIdAsync")
-      .mockReturnValueOnce(contextObjectUnderTest);
+    const addedEntity = await repository.add(contextObjectUnderTest);
+
+    const serviceResponse = await services.bycicleServiceApi.getByIdAsync(
+      addedEntity._id
+    );
 
     // Act and assert
     await request(app)
-      .get(`/bycicles/${contextObjectUnderTest.id}`)
+      .get(`/bycicles/${addedEntity._id}`)
       .expect(200)
       .then((res) => {
         // assertions
-        expect(res.body).toEqual(contextObjectUnderTest);
-        expect(getByIdBycicleServiceMock).toHaveBeenLastCalledWith({
-          id: "63b1db13b2ade9465c9c5d0d",
-        });
+        expect(res.body).toEqual(serviceResponse);
+        // expect(getByIdBycicleServiceMock).toHaveBeenLastCalledWith({
+        //   id: "63b1db13b2ade9465c9c5d0d",
+        // });
       });
   });
 
