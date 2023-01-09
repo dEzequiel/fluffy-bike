@@ -8,6 +8,15 @@ const router = express.Router();
 // The routes you define are matched sequentially in the
 // order they are defined. Hence,your second routing setup is correct.
 
+router.post("/", async (req, res) => {
+  const entity = req.body;
+
+  const resource = await controllers.bycicleControllerApi.addBycicle(entity);
+
+  const { statusCode, data } = resource;
+  return res.status(statusCode).json(data);
+});
+
 router.get("/", async (req, res) => {
   res.send({ message: "Hello World" });
 });
