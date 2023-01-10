@@ -6,7 +6,7 @@ const router = express.Router();
 // Actually if you pass anything after the /user/ path, eg, /users/anythingHere
 // would be matched by the /users/:id route. This is the way Express.js works.
 // The routes you define are matched sequentially in the
-// order they are defined. Hence,your second routing setup is correct.
+// order they are defined.
 
 router.post("/", async (req, res) => {
   const entity = req.body;
