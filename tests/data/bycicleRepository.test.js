@@ -281,6 +281,41 @@ describe("BycicleRepository implementation/integration tests", () => {
       );
     });
 
+    test("Should update entity find by id with new values", async () => {
+      // Arrange
+      const sut = new BycicleRepository();
+      const dataToAdd = {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      };
+
+      const addedEntity = await sut.add(dataToAdd);
+      const newData = {
+        name: "Update test",
+        type: "Update test",
+      };
+
+      // Act
+      const result = await sut.update(addedEntity._id, newData);
+
+      // Assert
+      expect(result._id).toBeDefined();
+      
+      expect(result.name).toBe("Update test");
+      expect(result.type).toBe("Update test");
+    });
+
     test("Should add a doc to collection", async () => {
       // Arrange
       const sut = new BycicleRepository(Model);
