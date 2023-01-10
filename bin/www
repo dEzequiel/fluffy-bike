@@ -1,7 +1,6 @@
 // Basically it removes all the create and start server code
 // from your app.js and let you focus only on the application logic part
 
-const { swaggerDocs: V1SwaggerDocs } = require("../swagger.js");
 const app = require("../app");
 const http = require("http");
 
