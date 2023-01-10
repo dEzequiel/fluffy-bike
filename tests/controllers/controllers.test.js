@@ -2,26 +2,11 @@ const { expect } = require("@jest/globals");
 const request = require("supertest");
 const app = require("../server.js");
 const services = require("../../services").byciclesService;
-const database = require("../../database");
-const repository = require("../../database/data-access/BycicleRepository.js");
-const BycicleRepository = require("../../database/data-access/BycicleRepository.js");
 
 // Usage of jest sintaxis
-// Assertions occurs inside promise callback
+// Assertions occurs inside promise callbacks.
 describe("Controllers testing", () => {
-  beforeAll(async () => {
-    await database.mongoMigrationConfig.connect();
-  });
-
-  beforeEach(async () => {
-    await database.mongoMigrationConfig.dropCollection();
-  });
-
-  afterAll(async () => {
-    await database.mongoMigrationConfig.disconnect();
-  });
-
-  test("GET /skeleton should be Hello World message", async () => {
+  test("GET /bycicles should be Hello World message", async () => {
     // Arrange
     const expected = { message: "Hello World" };
 
@@ -38,8 +23,8 @@ describe("Controllers testing", () => {
 
   test("GET /bycicles/:id Should return 200 with plain json object", async () => {
     // Arrange
-    const repository = new BycicleRepository();
     const contextObjectUnderTest = {
+      id: "63bd86efc9bc406f706a1994",
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -55,30 +40,31 @@ describe("Controllers testing", () => {
       available: true,
     };
 
-    const addedEntity = await repository.add(contextObjectUnderTest);
-
-    const serviceResponse = await services.bycicleServiceApi.getByIdAsync(
-      addedEntity._id
-    );
+    const serviceResponseMock = jest
+      .spyOn(services.bycicleServiceApi, "getByIdAsync")
+      .mockImplementation(() => {
+        return contextObjectUnderTest;
+      });
 
     // Act and assert
     await request(app)
-      .get(`/bycicles/${addedEntity._id}`)
+      .get(`/bycicles/${contextObjectUnderTest.id}`)
       .expect(200)
+      .expect("Content-Type", /json/)
       .then((res) => {
         // assertions
-        expect(res.body).toEqual(serviceResponse);
-        // expect(getByIdBycicleServiceMock).toHaveBeenLastCalledWith({
-        //   id: "63b1db13b2ade9465c9c5d0d",
-        // });
+        expect(res.body).toEqual(contextObjectUnderTest);
+        expect(serviceResponseMock).toHaveBeenLastCalledWith({
+          id: contextObjectUnderTest.id,
+        });
       });
   });
 
   test("GET /bycicles/getAll Should return 200 with list of plain json objects", async () => {
     // Arrange
-    const repository = new BycicleRepository();
-    const dataUnderTest = [
+    const contextObjectUnderTest = [
       {
+        id: "63bd886ddfff5d7ac2f98e0d",
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -94,6 +80,7 @@ describe("Controllers testing", () => {
         available: true,
       },
       {
+        id: "63bd8873fc177691f5c10f0d",
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -109,6 +96,7 @@ describe("Controllers testing", () => {
         available: true,
       },
       {
+        id: "63bd888f6d6b2deddb2a53b5",
         name: "Roadster Elite",
         brand: "All City",
         price: 1299.99,
@@ -124,23 +112,29 @@ describe("Controllers testing", () => {
         available: true,
       },
     ];
-    await repository.addMany(dataUnderTest);
-    const serviceResponse = await services.bycicleServiceApi.getAllAsync();
+
+    const serviceResponseMock = jest
+      .spyOn(services.bycicleServiceApi, "getAllAsync")
+      .mockImplementation(() => {
+        return contextObjectUnderTest;
+      });
 
     // Act and assert
     await request(app)
       .get(`/bycicles/getAll`)
       .expect(200)
+      .expect("Content-Type", /json/)
       .then((res) => {
-        expect(res.body).toEqual(serviceResponse);
+        expect(res.body).toEqual(contextObjectUnderTest);
+        expect(serviceResponseMock).toHaveBeenCalled();
       });
   });
 
   test("GET /bycicles/brand/:brand Should return 200 with list of plain json objects", async () => {
     // Arrange
-    const repository = new BycicleRepository();
-    const dataUnderTest = [
+    const contextObjectUnderTest = [
       {
+        id: "63bd886ddfff5d7ac2f98e0d",
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -156,6 +150,7 @@ describe("Controllers testing", () => {
         available: true,
       },
       {
+        id: "63bd8873fc177691f5c10f0d",
         name: "Roadster Elite",
         brand: "Argon 18",
         price: 1299.99,
@@ -171,6 +166,7 @@ describe("Controllers testing", () => {
         available: true,
       },
       {
+        id: "63bd888f6d6b2deddb2a53b5",
         name: "Roadster Elite",
         brand: "All City",
         price: 1299.99,
@@ -186,11 +182,15 @@ describe("Controllers testing", () => {
         available: true,
       },
     ];
-    await repository.addMany(dataUnderTest);
     const brand = "Argon 18";
-    const serviceResponse = await services.bycicleServiceApi.getByBrandAsync(
-      "Argon 18"
-    );
+
+    let expectedResult;
+    const serviceResponseMock = jest
+      .spyOn(services.bycicleServiceApi, "getByBrandAsync")
+      .mockImplementation(() => {
+        expectedResult = [contextObjectUnderTest[0], contextObjectUnderTest[1]];
+        return expectedResult;
+      });
 
     // Act & assert
     await request(app)
@@ -198,13 +198,19 @@ describe("Controllers testing", () => {
       .expect(200)
       .expect("Content-Type", /json/)
       .then((res) => {
-        expect(res.body).toEqual(serviceResponse);
+        expect(res.body).toEqual(expectedResult);
+        expect(res.body.length).toBe(2);
+        res.body.forEach((doc) => {
+          expect(doc.brand).toEqual(brand);
+        });
+        expect(serviceResponseMock).toHaveBeenLastCalledWith(brand);
       });
   });
 
   test("POST /bycicles Should return 201 with created entity", async () => {
     // Arrange
     const dataUnderTest = {
+      id: "63bd886ddfff5d7ac2f98e0d",
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -219,6 +225,12 @@ describe("Controllers testing", () => {
       weight: 7.5,
       available: true,
     };
+
+    const serviceResponseMock = jest
+      .spyOn(services.bycicleServiceApi, "addAsync")
+      .mockImplementation(() => {
+        return dataUnderTest;
+      });
 
     // Act & assert
     await request(app)
@@ -229,13 +241,14 @@ describe("Controllers testing", () => {
       .then((res) => {
         expect(res.body.id).toBeDefined();
         expect(res.body).toEqual(expect.objectContaining(dataUnderTest));
+        expect(serviceResponseMock).toHaveBeenCalledWith(dataUnderTest)
       });
   });
 
   test("DELETE /bycicles Should return 200 with delated entity", async () => {
     // Arrange
-    const repository = new BycicleRepository();
     const contextObjectUnderTest = {
+      id: "63bd886ddfff5d7ac2f98e0d",
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -251,18 +264,20 @@ describe("Controllers testing", () => {
       available: true,
     };
 
-    const addedEntity = await repository.add(contextObjectUnderTest);
-    const serviceResponse = await services.bycicleServiceApi.getByIdAsync(
-      addedEntity._id
-    );
+    const serviceResponseMock = jest
+    .spyOn(services.bycicleServiceApi, "deleteAsync")
+    .mockImplementation(() => {
+      return contextObjectUnderTest;
+    });
 
     // Act & assert
     await request(app)
-      .delete(`/bycicles/id/${addedEntity._id}`)
+      .delete(`/bycicles/id/${contextObjectUnderTest.id}`)
       .expect(200)
       .expect("Content-Type", /json/)
       .then((res) => {
-        expect(res.body).toEqual(serviceResponse);
+        expect(res.body).toEqual(contextObjectUnderTest);
+        expect(serviceResponseMock).toHaveBeenCalledWith(contextObjectUnderTest.id)
       });
   });
 });
