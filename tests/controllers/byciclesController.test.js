@@ -326,7 +326,7 @@ describe("Controllers testing", () => {
 
     // Act & assert
     await request(app)
-      .delete(`/bycicles/id/${contextObjectUnderTest.id}`)
+      .delete(`/bycicles/del/${contextObjectUnderTest.id}`)
       .expect(200)
       .expect("Content-Type", /json/);
     expect(serviceResponseMock).toHaveBeenCalledWith(contextObjectUnderTest.id);
@@ -343,7 +343,7 @@ describe("Controllers testing", () => {
 
     // Act & assert
     await request(app)
-      .delete(`/bycicles/id/${id}`)
+      .delete(`/bycicles/del/${id}`)
       .expect(404)
       .expect("Content-Type", /json/);
     expect(serviceResponseMock).toBeCalled();
