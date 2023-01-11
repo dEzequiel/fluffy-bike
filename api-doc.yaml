@@ -21,6 +21,48 @@ paths:
                 $ref: "#/components/schemas/Welcome"
                 description: The welcome message.
 
+  /bycicles/{id}:
+    get:
+      tags:
+        - Bycicles
+      parameters:
+        - in: path
+          name: id
+          required: true
+      summary: Get specific bycicle by id.
+      description: This resource returns an specific bycicle that match given id.
+      operationId: getBycicleById
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bycicle"
+              example:
+                {
+                  id: "63b1db13b2ade9465c9c5d0d",
+                  name: "Roadster Elite",
+                  brand: "Argon 18",
+                  price: 1299.99,
+                  type: "Road",
+                  frame: "Carbon",
+                  fork: "XC",
+                  gears: "Derailleur gears",
+                  brakes: "Hydraulic Disc",
+                  wheels: "700c",
+                  tires: "Road tires",
+                  suspension: "Hardtail",
+                  weight: 7.5,
+                  available: true,
+                }
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "5XX":
+          description: Some internal error occurr.
+
   /bycicles/getAll:
     get:
       tags:
@@ -85,6 +127,66 @@ paths:
                     tires: "Commuter tires",
                     suspension: "Rigid",
                     weight: 9.5,
+                    available: true,
+                  },
+                ]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "5XX":
+          description: Some internal error occurr.
+
+  /bycicles/brand/{brand}:
+    get:
+      tags:
+        - Bycicles
+      parameters:
+        - in: path
+          name: brand
+          required: true
+      summary: Get collection of bycicles from the same brand.
+      description: This resource returns a collection of bycicles that match the same brand
+      operationId: getBycicleByBrand
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bycicle"
+              example:
+                [
+                  {
+                    name: "Roadster Elite",
+                    brand: "Argon 18",
+                    price: 1299.99,
+                    type: "Road",
+                    frame: "Carbon",
+                    fork: "XC",
+                    gears: "Derailleur gears",
+                    brakes: "Hydraulic Disc",
+                    wheels: "700c",
+                    tires: "Road tires",
+                    suspension: "Hardtail",
+                    weight: 7.5,
+                    available: true,
+                  },
+                  {
+                    name: "Roadster Elite",
+                    brand: "Argon 18",
+                    price: 1299.99,
+                    type: "Road",
+                    frame: "Carbon",
+                    fork: "XC",
+                    gears: "Derailleur gears",
+                    brakes: "Hydraulic Disc",
+                    wheels: "700c",
+                    tires: "Road tires",
+                    suspension: "Hardtail",
+                    weight: 7.5,
                     available: true,
                   },
                 ]
