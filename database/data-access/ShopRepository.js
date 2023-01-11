@@ -50,27 +50,24 @@ class ShopRepository extends Repository {
     return response;
   }
 
-  getStock(shopId) {
+  async getStock(shopId) {
     const response = new Promise((resolve, reject) => {
-      ShopModel.findById(shopId)
-        .populate({
-          path: "bycicles",
-          model: "Bycicle",
-        })
-        .exec((err, result) => {
-          if (err) {
-            console.error(err);
-            reject(err);
-          } else {
-            if (result === null) {
-              reject(`No document found with id: ${shopId}`);
-            }
-            console.log(result.bycicles);
-            resolve(result);
+      ShopModel.findById(shopId, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with id: ${shopId}`);
           }
-        });
+          resolve(result);
+        }
+      }).populate("bycicles");
     });
+
     return response;
   }
+
+  async 
 }
 module.exports = ShopRepository;
