@@ -14,10 +14,11 @@ router.post("/", async (req, res) => {
   const resource = await controllers.bycicleControllerApi.addBycicle(entity);
 
   const { statusCode, data } = resource;
+
   return res.status(statusCode).json(data);
 });
 
-router.delete("/id/:id", async (req, res) => {
+router.delete("/del/:id", async (req, res) => {
   const id = req.params.id;
 
   const resource = await controllers.bycicleControllerApi.deleteBycicle(id);

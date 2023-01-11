@@ -5,22 +5,6 @@ info:
   version: 1.0.0
 
 paths:
-  /bycicles:
-    get:
-      tags:
-        - Test
-      summary: Welcome message
-      description: This resource returns a welcome message, testing purposes
-      operationId: getWelcomeMessage
-      responses:
-        "200":
-          description: Sucessful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Welcome"
-                description: The welcome message.
-
   /bycicles/{id}:
     get:
       tags:
@@ -197,6 +181,76 @@ paths:
         "5XX":
           description: Some internal error occurr.
 
+  /bycicles:
+    post:
+      tags:
+        - Bycicles
+      summary: Add a new bycicle
+      description: This resource add a new bycicle
+      operationId: postBycicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bycicle"
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bycicle"
+              example:
+                {
+                  id: "63b1db13b2ade9465c9c5d0d",
+                  name: "Roadster Elite",
+                  brand: "Argon 18",
+                  price: 1299.99,
+                  type: "Road",
+                  frame: "Carbon",
+                  fork: "XC",
+                  gears: "Derailleur gears",
+                  brakes: "Hydraulic Disc",
+                  wheels: "700c",
+                  tires: "Road tires",
+                  suspension: "Hardtail",
+                  weight: 7.5,
+                  available: true,
+                }
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "5XX":
+          description: Some internal error occurr.
+
+  /bycicles/del/{id}:
+    delete:
+      tags:
+        - Bycicles
+      parameters:
+        - in: path
+          name: id
+          required: true
+      summary: Deletes specific bycicle by id.
+      description: This resource deletes an specific bycicle that match given id.
+      operationId: deleteBycicleById
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 63b1db13b2ade9465c9c5d0d
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "5XX":
+          description: Some internal error occurr.
+
 components:
   responses:
     NotFound:
@@ -212,13 +266,6 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
   schemas:
-    Welcome:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The welcome message.
-
     Bycicle:
       type: object
       properties:
