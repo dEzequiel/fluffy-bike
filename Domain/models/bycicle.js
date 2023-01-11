@@ -81,4 +81,4 @@ BycicleSchema.statics.findByName = function (name) {
   return this.findOne({ name: name });
 };
 
-module.exports = mongoose.model("bycicles", BycicleSchema);
+module.exports = mongoose.model("Bycicle", BycicleSchema);
