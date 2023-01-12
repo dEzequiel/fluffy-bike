@@ -38,7 +38,7 @@ describe("BycicleRepository should override prototype chain inherit methods from
     expect(sut.__proto__.hasOwnProperty("getAll")).toBeTruthy();
     expect(sut.__proto__.hasOwnProperty("getById")).toBeTruthy();
     expect(sut.__proto__.hasOwnProperty("add")).toBeTruthy();
-    expect(sut.__proto__.hasOwnProperty("remove")).toBeTruthy();
+    expect(sut.__proto__.hasOwnProperty("delete")).toBeTruthy();
     expect(sut.__proto__.hasOwnProperty("getByBrand")).toBeTruthy();
   });
 });
@@ -272,11 +272,11 @@ describe("BycicleRepository implementation/integration tests", () => {
       await sut.addMany(dataUnderTest);
 
       // Act
-      const result = await sut.remove("63b859b14552d7ff361a5be5");
+      const result = await sut.delete("63b859b14552d7ff361a5be5");
 
       // Arrange
       expect(result).not.toBeNull();
-      await expect(sut.remove("63b859b14552d7ff361a5be5")).rejects.toEqual(
+      await expect(sut.delete("63b859b14552d7ff361a5be5")).rejects.toEqual(
         expectedMessage
       );
     });
@@ -485,7 +485,7 @@ describe("BycicleRepository implementation/integration tests", () => {
       const id = addedEntity._id.toString();
 
       // Act
-      const result = await sut.remove(id);
+      const result = await sut.delete(id);
 
       // Assert
       expect(result).not.toBeNull();
@@ -498,7 +498,7 @@ describe("BycicleRepository implementation/integration tests", () => {
       const id = "63b992871d47bc3d793d53d9";
       const expectedMessage = `No document found with id: ${id}`;
       // Act & assert
-      await expect(sut.remove(id)).rejects.toEqual(expectedMessage);
+      await expect(sut.delete(id)).rejects.toEqual(expectedMessage);
     });
   });
 });

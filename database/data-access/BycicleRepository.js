@@ -56,7 +56,7 @@ class BycicleRepository extends Repository {
     return response;
   }
 
-  remove(id) {
+  delete(id) {
     const response = new Promise((resolve, reject) => {
       Model.findByIdAndDelete(id, (err, result) => {
         if (err) {
