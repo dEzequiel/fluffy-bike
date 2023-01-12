@@ -55,9 +55,9 @@ describe("ShopRepository implementation/integration tests", () => {
   });
 
   connection = database.mongoDbConfig.getConnection();
-//   test("Model should use testing collection", async () => {
-//     expect(ShopModel.collection.collectionName).toEqual("Shop-Testing");
-//   });
+  //   test("Model should use testing collection", async () => {
+  //     expect(ShopModel.collection.collectionName).toEqual("Shop-Testing");
+  //   });
 
   test("Should create new shop with empty bycicles stock", async () => {
     // Arrange
@@ -143,17 +143,89 @@ describe("ShopRepository implementation/integration tests", () => {
     // Act
     const result = await sut.getStock(addedShop._id);
 
-    // Assert    
+    // Assert
     expect(result).not.toBeNull();
     expect(result._id).not.toBeNull();
     expect(result._id).not.toBeUndefined();
-    expect(result.name).toBe('Shop3-Test');
+    expect(result.name).toBe("Shop3-Test");
 
     expect(result.bycicles).not.toBeNull();
     expect(result.bycicles).not.toBeUndefined();
     expect(result.bycicles.length).toBe(1);
     expect(result.bycicles[0]._id).not.toBeNull();
     expect(result.bycicles[0]._id).not.toBeUndefined();
-    expect
+    expect;
   });
+
+  // test("Should retrieve shop with available stock", async () => {
+  //   // Arrange
+  //   const sut = new ShopRepository();
+  //   const addedShop = await sut.createShop("Shop3-Test");
+  //   const dataUnderTest = [
+  //     new BycicleModel({
+  //       _id: ObjectId("63b859b14552d7ff361a5be5"),
+  //       name: "Roadster Elite",
+  //       brand: "Argon 18",
+  //       price: 1299.99,
+  //       type: "Road",
+  //       frame: "Carbon",
+  //       fork: "XC",
+  //       gears: "Derailleur gears",
+  //       brakes: "Hydraulic Disc",
+  //       wheels: "700c",
+  //       tires: "Road tires",
+  //       suspension: "Hardtail",
+  //       weight: 7.5,
+  //       available: false,
+  //     }),
+  //     new BycicleModel({
+  //       _id: ObjectId("63b85961c2ad6d4b9048f7e1"),
+  //       name: "Roadster Elite",
+  //       brand: "Argon 18",
+  //       price: 1299.99,
+  //       type: "Road",
+  //       frame: "Carbon",
+  //       fork: "XC",
+  //       gears: "Derailleur gears",
+  //       brakes: "Hydraulic Disc",
+  //       wheels: "700c",
+  //       tires: "Road tires",
+  //       suspension: "Hardtail",
+  //       weight: 7.5,
+  //       available: true,
+  //     }),
+  //   ];
+  //   await BycicleModel.insertMany(dataUnderTest);
+
+  //   await sut.addBycicleToShop(addedShop._id, dataUnderTest[0]._id);
+  //   await sut.addBycicleToShop(addedShop._id, dataUnderTest[1]._id);
+
+  //   // Act
+  //   const result = await sut.getAvailableStock(addedShop._id);
+
+  //   // Assert
+  //   expect(result).not.toBeNull();
+  //   expect(result._id).not.toBeNull();
+  //   expect(result._id).not.toBeUndefined();
+  //   expect(result.bycicles.length).toBe(1);
+  // });
+
+  // test("Should return empty array because population was empty", async () => {
+  //   // Arrange
+  //   const sut = new ShopRepository();
+  //   const addedShop = await sut.createShop("Shop3-Test");
+
+  //   // Act
+  //   const result = await sut.getStock(addedShop._id);
+
+  //   // Assert
+  //   expect(result).not.toBeNull();
+  //   expect(result._id).not.toBeNull();
+  //   expect(result._id).not.toBeUndefined();
+  //   expect(result.name).toBe("Shop3-Test");
+
+  //   expect(result.bycicles).not.toBeNull();
+  //   expect(result.bycicles).not.toBeUndefined();
+  //   expect(result.bycicles.length).toBe(0);
+  // });
 });
