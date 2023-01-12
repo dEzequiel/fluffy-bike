@@ -46,6 +46,14 @@ const byciclesService = (function () {
     return addedEntity;
   };
 
+  const updateAsync = async (id, data) => {
+    const updatedEntity = repository.update(id, data).then((result) => {
+      return parser(result);
+    });
+
+    return updatedEntity;
+  };
+
   const deleteAsync = async (id) => {
     const deletedEntity = repository.remove(id).then((result) => {
       return parser(result);
@@ -117,6 +125,7 @@ const byciclesService = (function () {
     getByBrandAsync,
     addAsync,
     deleteAsync,
+    updateAsync,
   };
 })();
 

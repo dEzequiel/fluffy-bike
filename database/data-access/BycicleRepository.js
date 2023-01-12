@@ -143,9 +143,9 @@ class BycicleRepository extends Repository {
           console.error(err);
           reject(err);
         } else {
-          // if (result === null) {
-          //   reject(`No document found with id: ${id}`);
-          // }
+          if (result === null) {
+            reject(`No document found with id: ${id}`);
+          }
           resolve(result);
         }
       });

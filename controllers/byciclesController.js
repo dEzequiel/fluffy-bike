@@ -67,6 +67,20 @@ const byciclesController = (function () {
     return response;
   };
 
+  const updateBycicle = async (fields) => {
+    let response;
+
+    const result = await services.bycicleServiceApi.updateAsync(id, fields);
+
+    if (!result) {
+      response = new ApiResponse(false, 500, result);
+    } else {
+      response = new ApiResponse(true, 200, result);
+    }
+
+    return response;
+  };
+
   const deleteBycicle = async (id) => {
     let response;
 
@@ -88,6 +102,7 @@ const byciclesController = (function () {
     getByBrand,
     addBycicle,
     deleteBycicle,
+    updateBycicle,
   };
 })();
 

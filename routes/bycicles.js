@@ -18,6 +18,20 @@ router.post("/", async (req, res) => {
   return res.status(statusCode).json(data);
 });
 
+router.put("/up/:id", async (req, res) => {
+  const id = req.params.id;
+  const { fields } = req.body;
+
+  const resource = await controllers.bycicleControllerApi.updateBycicle(
+    id,
+    fields
+  );
+
+  const { statusCode, data } = resource;
+
+  return res.status(statusCode).json(data);
+});
+
 router.delete("/del/:id", async (req, res) => {
   const id = req.params.id;
 
