@@ -54,6 +54,7 @@ const databaseModule = (function () {
 
   async function disconnect() {
     await mongoose.disconnect();
+    await mongoose.connection.close();
   }
 
   async function dropCollection() {
