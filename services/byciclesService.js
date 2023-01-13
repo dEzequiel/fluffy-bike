@@ -4,7 +4,7 @@ const byciclesService = (function () {
   const repository = new BycicleRepository();
   let parser;
 
-  const getByIdAsync = async (id) => {
+  const getByIdAsync = async (id) => { 
     const entity = repository.getById(id).then((result) => {
       return parser(result);
     });
@@ -46,8 +46,16 @@ const byciclesService = (function () {
     return addedEntity;
   };
 
+  const updateAsync = async (id, data) => {
+    const updatedEntity = repository.update(id, data).then((result) => {
+      return parser(result);
+    });
+
+    return updatedEntity;
+  };
+
   const deleteAsync = async (id) => {
-    const deletedEntity = repository.remove(id).then((result) => {
+    const deletedEntity = repository.delete(id).then((result) => {
       return parser(result);
     });
 
@@ -117,6 +125,7 @@ const byciclesService = (function () {
     getByBrandAsync,
     addAsync,
     deleteAsync,
+    updateAsync,
   };
 })();
 

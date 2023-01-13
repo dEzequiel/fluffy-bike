@@ -8,25 +8,6 @@ const router = express.Router();
 // The routes you define are matched sequentially in the
 // order they are defined.
 
-router.post("/", async (req, res) => {
-  const entity = req.body;
-
-  const resource = await controllers.bycicleControllerApi.addBycicle(entity);
-
-  const { statusCode, data } = resource;
-
-  return res.status(statusCode).json(data);
-});
-
-router.delete("/del/:id", async (req, res) => {
-  const id = req.params.id;
-
-  const resource = await controllers.bycicleControllerApi.deleteBycicle(id);
-
-  const { statusCode, data } = resource;
-  return res.status(statusCode).json(data);
-});
-
 router.get("/", async (req, res) => {
   res.send({ message: "Hello World" });
 });
@@ -46,6 +27,45 @@ router.get("/:id", async (req, res) => {
   const { statusCode, data } = resource;
   return res.status(statusCode).json(data);
 });
+
+router.post("/", async (req, res) => {
+  const entity = req.body;
+
+  const resource = await controllers.bycicleControllerApi.addBycicle(entity);
+
+  const { statusCode, data } = resource;
+
+  return res.status(statusCode).json(data);
+});
+
+router.put("/up/:id", async (req, res) => {
+  const id = req.params.id;
+  const { fields } = req.body;
+
+  const resource = await controllers.bycicleControllerApi.updateBycicle(
+    id,
+    fields
+  );
+
+  const { statusCode, data } = resource;
+
+  return res.status(statusCode).json(data);
+});
+
+router.delete("/del/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const resource = await controllers.bycicleControllerApi.deleteBycicle(id);
+
+  const { statusCode, data } = resource;
+  return res.status(statusCode).json(data);
+});
+
+
+
+
+
+
 
 router.get("/brand/:brand", async (req, res) => {
   const brand = req.params.brand;

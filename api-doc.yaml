@@ -225,6 +225,54 @@ paths:
         "5XX":
           description: Some internal error occurr.
 
+  /bycicles/up/{id}:
+    put:
+      tags:
+        - Bycicles
+      parameters:
+        - in: path
+          name: id
+          required: true
+      summary: Update bycicle
+      description: This resource updates a bycicle
+      operationId: updateBycicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bycicle"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bycicle"
+              example:
+                {
+                  id: "63b1db13b2ade9465c9c5d0d",
+                  name: "Roadster Elite",
+                  brand: "Argon 18",
+                  price: 1299.99,
+                  type: "Road",
+                  frame: "Carbon",
+                  fork: "XC",
+                  gears: "Derailleur gears",
+                  brakes: "Hydraulic Disc",
+                  wheels: "700c",
+                  tires: "Road tires",
+                  suspension: "Hardtail",
+                  weight: 7.5,
+                  available: true,
+                }
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "5XX":
+          description: Some internal error occurr.
+
   /bycicles/del/{id}:
     delete:
       tags:
