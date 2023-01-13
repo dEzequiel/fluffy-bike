@@ -2,6 +2,8 @@ const database = require("../../database/");
 const ShopModel = require("../../domain/models/shop.js");
 const BycicleModel = require("../../domain/models/bycicle.js");
 const services = require("../../services").shopService;
+const bycicleServices = require("../../services").byciclesService;
+
 const ObjectId = require("mongodb").ObjectId;
 const { expect } = require("@jest/globals");
 const ShopRepository = require("../../database/data-access/ShopRepository.js");
@@ -58,13 +60,53 @@ describe("Shop service testing", () => {
       // Act
       expectedShopObject.id = addedShop.id;
       const result = await services.shopServiceApi.getByIdAsync(addedShop.id);
-      console.log(result)
+      console.log(result);
       // Assert
       expect(result).not.toBeNull();
       expect(result).toEqual(expectedShopObject);
     });
-    
-    // test("Should return shop with stock as js plain obbject", async () => {
+
+    test("Should add bycicle to shop", async () => {
+      // Arrange
+      const addedBycicleObject = new BycicleModel({
+        _id: ObjectId("5f9a1f1b6a2a2c0a8c9d9e0f"),
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        price: 1299.99,
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+        available: true,
+      });
+
+      await addedBycicleObject.save();
+      const addedShop = await services.shopServiceApi.addAsync("Bike Shop");
+
+      const expectedShopObject = {
+        id: addedShop.id,
+        name: "Bike Shop",
+        bycicles: [addedBycicleObject._id],
+      };
+
+      // Act
+      const result = await services.shopServiceApi.addBycicleAsync(
+        addedShop.id,
+        addedBycicleObject.id
+      );
+
+      // Assert
+      expect(result).not.toBeNull();
+      expect(result.bycicles.length).toBe(1);
+      expect(result).toEqual(expectedShopObject);
+    });
+
+    // test("Should return shop with stock as POJO", async () => {
     //   // Arrange
     //   const shop = {
     //     name: "Bike Shop",
