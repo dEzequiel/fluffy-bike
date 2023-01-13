@@ -138,7 +138,7 @@ class BycicleRepository extends Repository {
 
   update(id, item) {
     const response = new Promise((resolve, reject) => {
-      Model.findByIdAndUpdate(id, item, { new: true }, (err, result) => {
+      Model.findOneAndUpdate({_id: id}, item, { new: true }, (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
