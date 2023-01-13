@@ -67,7 +67,7 @@ const byciclesController = (function () {
     return response;
   };
 
-  const updateBycicle = async (fields) => {
+  const updateBycicle = async (id, fields) => {
     let response;
 
     const result = await services.bycicleServiceApi.updateAsync(id, fields);
