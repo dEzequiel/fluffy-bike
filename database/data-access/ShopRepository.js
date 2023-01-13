@@ -5,8 +5,20 @@ const ObjectId = require("mongodb").ObjectId;
 class ShopRepository extends Repository {
   // Create new shop with empty bycicles stock.
   createShop(name) {
-    const shop = new ShopModel({ name, bycicles: [] });
-    return shop.save();
+    const response = new Promise((resolve, reject) => {
+      const shop = new ShopModel({ name, bycicles: [] });
+
+      shop.save((err, result) => {
+        if(err){
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      })
+      })
+      return response
+
   }
 
   getById(id) {
