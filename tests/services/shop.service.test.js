@@ -31,23 +31,39 @@ describe("Shop service testing", () => {
   });
 
   describe("Shop service public api integration testing", () => {
-    test("Should return shop as js plain object", async () => {
+    test("Should create shop as POJO", async () => {
       // Arrange
-      const shop = await repository.createShop("Bike Shop");
       const expectedShopObject = {
-        id: shop._id,
         name: "Bike Shop",
         bycicles: [],
       };
 
       // Act
-      
-      const result = await services.shopServiceApi.getByIdAsync(shop._id);
+      const result = await services.shopServiceApi.addAsync("Bike Shop");
+      expectedShopObject.id = result.id;
 
+      // Assert
+      expect(result).not.toBeNull();
+      console.log(result);
+      expect(result).toEqual(expectedShopObject);
+    });
+    test("Should return shop as POJO", async () => {
+      // Arrange
+      const expectedShopObject = {
+        name: "Bike Shop",
+        bycicles: [],
+      };
+      const addedShop = await services.shopServiceApi.addAsync("Bike Shop");
+
+      // Act
+      expectedShopObject.id = addedShop.id;
+      const result = await services.shopServiceApi.getByIdAsync(addedShop.id);
+      console.log(result)
       // Assert
       expect(result).not.toBeNull();
       expect(result).toEqual(expectedShopObject);
     });
+    
     // test("Should return shop with stock as js plain obbject", async () => {
     //   // Arrange
     //   const shop = {
