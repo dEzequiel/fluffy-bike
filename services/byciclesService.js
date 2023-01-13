@@ -4,7 +4,7 @@ const byciclesService = (function () {
   const repository = new BycicleRepository();
   let parser;
 
-  const getByIdAsync = async (id) => {
+  const getByIdAsync = async (id) => { 
     const entity = repository.getById(id).then((result) => {
       return parser(result);
     });
@@ -55,7 +55,7 @@ const byciclesService = (function () {
   };
 
   const deleteAsync = async (id) => {
-    const deletedEntity = repository.remove(id).then((result) => {
+    const deletedEntity = repository.delete(id).then((result) => {
       return parser(result);
     });
 
