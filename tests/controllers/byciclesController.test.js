@@ -248,7 +248,7 @@ describe("Controllers testing", () => {
   test("POST /bycicles Should return 201 with created entity", async () => {
     // Arrange
     const dataUnderTest = {
-      id: "63bd886ddfff5d7ac2f98e0d",
+      id: "63bd886ddfff5d7ac2f98e0d",	
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -274,6 +274,7 @@ describe("Controllers testing", () => {
     await request(app)
       .post(`/bycicles`)
       .send(dataUnderTest)
+      .set('Accept', 'application/json')
       .expect(201)
       .expect("Content-Type", /json/)
       .then((res) => {
