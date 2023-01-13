@@ -4,12 +4,25 @@ const shopService = (function () {
   const repository = new ShopRepository();
   let parser;
 
+  const addAsync = async (name) => {
+    const entity = repository.createShop(name).then((result) => {
+      let pojo = result.toObject();
+
+      let { _id: id, name, bycicles } = pojo;
+
+      return { id, name, bycicles };
+      
+    })
+
+    return entity;
+  }
   const getByIdAsync = async (id) => {
     const entity = repository.getById(id).then((result) => {
-      delete result._v
-      let { _id: id, ...rest } = entity;
-      return { id, ...rest };
-      
+      let pojo = result.toObject();
+
+      let { _id: id, name, bycicles } = pojo;
+
+      return { id, name, bycicles };
     });
 
     return entity;
@@ -25,6 +38,7 @@ const shopService = (function () {
 
   return {
     getByIdAsync,
+    addAsync
   };
 })();
 
