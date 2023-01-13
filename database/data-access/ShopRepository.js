@@ -62,6 +62,24 @@ class ShopRepository extends Repository {
     return response;
   }
 
+  delete(id) {
+    const response = new Promise((resolve, reject) => {
+      ShopModel.remove(id, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with id: ${id}`);
+          }
+          resolve(result);
+        }
+      }); // Return plain js object instead of mongoose document
+    });
+
+    return response;
+  }
+
   async getStock(shopId) {
     const response = new Promise((resolve, reject) => {
       ShopModel.findById(shopId, (err, result) => {

@@ -78,6 +78,18 @@ describe("ShopRepository implementation/integration tests", () => {
     expect(result.bycicles.length).toBe(0);
   });
 
+  test("Should delete shop", async () => {
+    // Arrange
+    const sut = new ShopRepository();
+    const addedShop = await sut.createShop("Bike Shop");
+
+    // Act
+    await sut.delete(addedShop._id);
+
+    // Assert
+    await expect(sut.getById(addedShop._id)).rejects.toEqual(`No document found with id: ${addedShop._id}`);
+  })
+
   test("Should add existing bycicle to shop", async () => {
     // Arrange
     const sut = new ShopRepository();
@@ -120,7 +132,7 @@ describe("ShopRepository implementation/integration tests", () => {
     // Arrange
     const sut = new ShopRepository();
     const addedBycicle = new BycicleModel({
-      _id: ObjectId("63b859b14552d7ff361a5be5"),
+      _id: ObjectId("63b85961c2ad6d4b9048f7e1"),
       name: "Roadster Elite",
       brand: "Argon 18",
       price: 1299.99,
@@ -156,6 +168,40 @@ describe("ShopRepository implementation/integration tests", () => {
     expect(result.bycicles[0]._id).not.toBeUndefined();
     expect;
   });
+
+  // test("Should delete shop and associated bycicles", async () => {
+  //   // Arrange
+  //   const sut = new ShopRepository();
+  //   const addedBycicle = new BycicleModel({
+  //     _id: ObjectId("63b859b14552d7ff361a5be5"),
+  //     name: "Roadster Elite",
+  //     brand: "Argon 18",
+  //     price: 1299.99,
+  //     type: "Road",
+  //     frame: "Carbon",
+  //     fork: "XC",
+  //     gears: "Derailleur gears",
+  //     brakes: "Hydraulic Disc",
+  //     wheels: "700c",
+  //     tires: "Road tires",
+  //     suspension: "Hardtail",
+  //     weight: 7.5,
+  //     available: true,
+  //   });
+  //   await addedBycicle.save();
+  //   const addedShop = await sut.createShop("Bike Shop");
+  //   await sut.addBycicleToShop(addedShop._id, addedBycicle._id);
+  //   const expectedMessage = (id) => `No document found with id: ${id}`;
+
+  //   // Act
+  //   await sut.delete(addedShop._id);
+  //   const bycicle = await BycicleModel.findById(addedBycicle._id);
+
+  //   // Assert
+  //   await expect(sut.getById(addedShop._id)).rejects.toEqual(expectedMessage(addedShop._id));
+  //   expect(bycicle).toBeNull();
+    
+  // });
 
   // test("Should retrieve shop with available stock", async () => {
   //   // Arrange
