@@ -295,6 +295,7 @@ describe("Controllers testing", () => {
     // Act & assert
     await request(app)
       .post(`/bycicles`)
+      .send(null)
       .expect(500)
       .expect("Content-Type", /json/);
     expect(serviceResponseMock).toHaveBeenCalledWith({});
