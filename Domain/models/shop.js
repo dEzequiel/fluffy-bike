@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 dotenv.config();
 
 const ShopSchema = new mongoose.Schema({
-  name: { type: String, unique: true, required: true },
+  name: { type: String, required: true },
   bycicles: [{ type: Schema.Types.ObjectId, ref: "Bycicle" }],
 });
 
