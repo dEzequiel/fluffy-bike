@@ -33,7 +33,7 @@ describe("StockRepository implementation/integration tests", () => {
   });
 
   afterEach(async () => {
-    await ShopModel.collection.drop();
+    await StockModel.collection.drop();
   });
 
   connection = database.mongoDbConfig.getConnection();
@@ -54,5 +54,49 @@ describe("StockRepository implementation/integration tests", () => {
     expect(stock.shopId).not.toBeNull();
     expect(stock.bycicles).not.toBeNull();
     expect(stock.bycicles.length).toBe(0);
+  });
+
+  test("Should add a bycicle to a existing stock", async () => {
+    // Arrange
+    const sut = new StockRepository();
+    const shop = new ShopRepository();
+    const bycicle = new BycicleRepository();
+
+    const bycicleData = {
+      name: "Roadster Elite",
+      brand: "Argon 18",
+      price: 1299.99,
+      type: "Road",
+      frame: "Carbon",
+      fork: "XC",
+      gears: "Derailleur gears",
+      brakes: "Hydraulic Disc",
+      wheels: "700c",
+      tires: "Road tires",
+      suspension: "Hardtail",
+      weight: 7.5,
+      available: true,
+    };
+
+    const addedShop = await shop.createShop("Bike Shop");
+    const addedStock = await sut.createStock(addedShop._id);
+    const addedBycicle = await bycicle.add(bycicleData);
+
+    // Act
+    const stock = await sut.addBycicleToStock(addedStock._id, addedBycicle._id, 1);
+
+    // Assert
+    expect(addedBycicle).not.toBeNull();
+    expect(addedBycicle._id).not.toBeNull();
+
+    expect(stock).not.toBeNull();
+    expect(stock._id).not.toBeNull();
+    expect(stock.shopId).not.toBeNull();
+    expect(stock.bycicles).not.toBeNull();
+    expect(stock.bycicles.length).toBe(1);
+    expect(stock.bycicles[0].bycicle).not.toBeNull();
+    expect(stock.bycicles[0].quantity).toBe(1);
+    expect(stock.bycicles[0].bycicle._id).not.toBeNull();
+    expect(stock.bycicles[0].bycicle._id).toEqual(addedBycicle._id);
   });
 });
