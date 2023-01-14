@@ -6,7 +6,7 @@ const Repository = require("../../database/data-access/Repository.js");
 const ShopRepository = require("../../database/data-access/ShopRepository.js");
 const BycicleRepository = require("../../database/data-access/BycicleRepository.js");
 
-describe("BycicleRepository should override prototype chain inherit methods from Repository", () => {
+describe("ShopRepository should override prototype chain inherit methods from Repository", () => {
   test("Repository prototype has own methods", () => {
     // Arrange
     const sut = new Repository();
