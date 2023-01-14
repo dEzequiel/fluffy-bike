@@ -78,7 +78,6 @@ class BycicleRepository extends Repository {
     const {
       name,
       brand,
-      price,
       type,
       frame,
       fork,
@@ -88,14 +87,12 @@ class BycicleRepository extends Repository {
       tires,
       suspension,
       weight,
-      available,
     } = data || {};
 
     const response = new Promise((resolve, reject) => {
       const newDoc = new Model({
         name,
         brand,
-        price,
         type,
         frame,
         fork,
@@ -105,7 +102,6 @@ class BycicleRepository extends Repository {
         tires,
         suspension,
         weight,
-        available,
       });
 
       newDoc.save((err, result) => {
@@ -138,17 +134,22 @@ class BycicleRepository extends Repository {
 
   update(id, item) {
     const response = new Promise((resolve, reject) => {
-      Model.findOneAndUpdate({_id: id}, item, { new: true }, (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          if (result === null) {
-            reject(`No document found with id: ${id}`);
+      Model.findOneAndUpdate(
+        { _id: id },
+        item,
+        { new: true },
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            if (result === null) {
+              reject(`No document found with id: ${id}`);
+            }
+            resolve(result);
           }
-          resolve(result);
         }
-      });
+      );
     });
     return response;
   }

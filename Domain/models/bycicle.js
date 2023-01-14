@@ -15,14 +15,6 @@ const BycicleSchema = new mongoose.Schema(
       enum: ["All City", "Argon 18", "Bulls", "CUBE"],
       default: "All City",
     },
-    price: {
-      type: Number,
-      validate: (value) => {
-        if (value < 0) {
-          throw new Error("Price must be a positive number");
-        }
-      },
-    },
     type: {
       type: String,
       enum: ["Road", "Mountain", "Urban", "BMX"],
@@ -62,7 +54,6 @@ const BycicleSchema = new mongoose.Schema(
         }
       },
     },
-    available: { type: Boolean, default: true },
   },
   {
     timestamps: true, // createdAt, updatedAt

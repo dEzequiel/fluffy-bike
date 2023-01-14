@@ -72,7 +72,6 @@ describe("Shop service testing", () => {
         _id: ObjectId("5f9a1f1b6a2a2c0a8c9d9e0f"),
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -82,7 +81,6 @@ describe("Shop service testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       });
 
       await addedBycicleObject.save();

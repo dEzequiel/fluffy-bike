@@ -31,7 +31,6 @@ describe("Controllers testing", () => {
       id: "63bd86efc9bc406f706a1994",
       name: "Roadster Elite",
       brand: "Argon 18",
-      price: 1299.99,
       type: "Road",
       frame: "Carbon",
       fork: "XC",
@@ -41,7 +40,6 @@ describe("Controllers testing", () => {
       tires: "Road tires",
       suspension: "Hardtail",
       weight: 7.5,
-      available: true,
     };
 
     const serviceResponseMock = jest
@@ -88,7 +86,6 @@ describe("Controllers testing", () => {
         id: "63bd886ddfff5d7ac2f98e0d",
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -98,13 +95,11 @@ describe("Controllers testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       },
       {
         id: "63bd8873fc177691f5c10f0d",
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -114,13 +109,11 @@ describe("Controllers testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       },
       {
         id: "63bd888f6d6b2deddb2a53b5",
         name: "Roadster Elite",
         brand: "All City",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -130,7 +123,6 @@ describe("Controllers testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       },
     ];
 
@@ -175,7 +167,6 @@ describe("Controllers testing", () => {
         id: "63bd886ddfff5d7ac2f98e0d",
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -185,13 +176,11 @@ describe("Controllers testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       },
       {
         id: "63bd8873fc177691f5c10f0d",
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -201,13 +190,11 @@ describe("Controllers testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       },
       {
         id: "63bd888f6d6b2deddb2a53b5",
         name: "Roadster Elite",
         brand: "All City",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -217,7 +204,6 @@ describe("Controllers testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       },
     ];
     const brand = "Argon 18";
@@ -251,7 +237,6 @@ describe("Controllers testing", () => {
       id: "63bd886ddfff5d7ac2f98e0d",	
       name: "Roadster Elite",
       brand: "Argon 18",
-      price: 1299.99,
       type: "Road",
       frame: "Carbon",
       fork: "XC",
@@ -261,7 +246,6 @@ describe("Controllers testing", () => {
       tires: "Road tires",
       suspension: "Hardtail",
       weight: 7.5,
-      available: true,
     };
 
     const serviceResponseMock = jest
@@ -307,7 +291,6 @@ describe("Controllers testing", () => {
       id: "63bd886ddfff5d7ac2f98e0d",
       name: "Roadster Elite",
       brand: "Argon 18",
-      price: 1299.99,
       type: "Road",
       frame: "Carbon",
       fork: "XC",
@@ -317,7 +300,6 @@ describe("Controllers testing", () => {
       tires: "Road tires",
       suspension: "Hardtail",
       weight: 7.5,
-      available: true,
     };
 
     const serviceResponseMock = jest

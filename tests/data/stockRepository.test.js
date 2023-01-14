@@ -65,7 +65,6 @@ describe("StockRepository implementation/integration tests", () => {
     const bycicleData = {
       name: "Roadster Elite",
       brand: "Argon 18",
-      price: 1299.99,
       type: "Road",
       frame: "Carbon",
       fork: "XC",
@@ -75,7 +74,6 @@ describe("StockRepository implementation/integration tests", () => {
       tires: "Road tires",
       suspension: "Hardtail",
       weight: 7.5,
-      available: true,
     };
 
     const addedShop = await shop.createShop("Bike Shop");

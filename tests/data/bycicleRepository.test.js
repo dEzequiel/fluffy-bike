@@ -76,7 +76,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         _id: ObjectId("63b1db13b2ade9465c9c5d0d"),
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -86,7 +85,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       });
       await dataUnderTest.save();
 
@@ -107,7 +105,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           _id: ObjectId("63b859b14552d7ff361a5be5"),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -117,13 +114,11 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
         new Model({
           _id: ObjectId("63b85961c2ad6d4b9048f7e1"),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -133,7 +128,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
       ];
 
@@ -155,7 +149,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           _id: ObjectId("63b85a6b30b8076e6b5c14ff"),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -165,13 +158,11 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
         new Model({
           _id: ObjectId("63b85a7546f4e3e30fc7d97d"),
           name: "Roadster Elite",
           brand: "All City",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -181,13 +172,11 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
         new Model({
           _id: ObjectId("63b85a7abee199663346070c"),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -197,13 +186,11 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
         new Model({
           _id: ObjectId("63b85a7f266a0d3a963d15cc"),
           name: "Roadster Elite",
           brand: "CUBE",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -213,7 +200,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
       ];
 
@@ -239,7 +225,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           _id: ObjectId("63b859b14552d7ff361a5be5"),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -249,13 +234,11 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
         new Model({
           _id: ObjectId("63b85961c2ad6d4b9048f7e1"),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -265,7 +248,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         }),
       ];
 
@@ -287,7 +269,6 @@ describe("BycicleRepository implementation/integration tests", () => {
       const dataToAdd = {
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -297,7 +278,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
 
       const addedEntity = await sut.add(dataToAdd);
@@ -311,7 +291,7 @@ describe("BycicleRepository implementation/integration tests", () => {
 
       // Assert
       expect(result._id).toBeDefined();
-      
+
       expect(result.name).toBe("Update test");
       expect(result.type).toBe("Update test");
     });
@@ -322,7 +302,6 @@ describe("BycicleRepository implementation/integration tests", () => {
       const dataToAdd = {
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -332,7 +311,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
 
       // Act
@@ -351,7 +329,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -361,12 +338,10 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           name: "Roadster Elite",
           brand: "All City",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -376,7 +351,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
       ];
 
@@ -399,7 +373,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -409,12 +382,10 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -424,12 +395,10 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           name: "Roadster Elite",
           brand: "All City",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -439,7 +408,6 @@ describe("BycicleRepository implementation/integration tests", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
       ];
 
@@ -469,7 +437,6 @@ describe("BycicleRepository implementation/integration tests", () => {
       const dataUnderTest = {
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -479,7 +446,6 @@ describe("BycicleRepository implementation/integration tests", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
       const addedEntity = await sut.add(dataUnderTest);
       const id = addedEntity._id.toString();

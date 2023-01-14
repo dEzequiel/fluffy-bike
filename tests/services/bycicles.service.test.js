@@ -34,7 +34,6 @@ describe("Services testing", () => {
       const entity = {
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -44,14 +43,12 @@ describe("Services testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
       const addedEntity = await repository.add(entity);
       const expectedEntity = {
         id: addedEntity._id.toString(),
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -61,7 +58,6 @@ describe("Services testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
 
       // Act
@@ -81,7 +77,6 @@ describe("Services testing", () => {
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -91,12 +86,10 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -106,7 +99,6 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
       ];
       const addedEntities = await repository.addMany(dataUnderTest);
@@ -116,7 +108,6 @@ describe("Services testing", () => {
           id: addedEntities[0]._id.toString(),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -126,13 +117,11 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           id: addedEntities[1]._id.toString(),
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -142,7 +131,6 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
       ];
 
@@ -163,7 +151,6 @@ describe("Services testing", () => {
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -173,12 +160,10 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           name: "Roadster Elite",
           brand: "Argon 18",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -188,12 +173,10 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
         {
           name: "Roadster Elite",
           brand: "All City",
-          price: 1299.99,
           type: "Road",
           frame: "Carbon",
           fork: "XC",
@@ -203,7 +186,6 @@ describe("Services testing", () => {
           tires: "Road tires",
           suspension: "Hardtail",
           weight: 7.5,
-          available: true,
         },
       ];
       const addedEntities = await sut.addMany(dataUnderTest);
@@ -227,7 +209,6 @@ describe("Services testing", () => {
       const dataToAdd = {
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -237,7 +218,6 @@ describe("Services testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
 
       // Act
@@ -256,7 +236,6 @@ describe("Services testing", () => {
       const dataToAdd = {
         name: "Roadster Elite",
         brand: "Argon 18",
-        price: 1299.99,
         type: "Road",
         frame: "Carbon",
         fork: "XC",
@@ -266,7 +245,6 @@ describe("Services testing", () => {
         tires: "Road tires",
         suspension: "Hardtail",
         weight: 7.5,
-        available: true,
       };
       const addedEntity = await repository.add(dataToAdd);
 

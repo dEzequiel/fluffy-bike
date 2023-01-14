@@ -97,7 +97,6 @@ describe("ShopRepository implementation/integration tests", () => {
       _id: ObjectId("63b859b14552d7ff361a5be5"),
       name: "Roadster Elite",
       brand: "Argon 18",
-      price: 1299.99,
       type: "Road",
       frame: "Carbon",
       fork: "XC",
@@ -107,7 +106,6 @@ describe("ShopRepository implementation/integration tests", () => {
       tires: "Road tires",
       suspension: "Hardtail",
       weight: 7.5,
-      available: true,
     });
 
     // Act
@@ -135,7 +133,6 @@ describe("ShopRepository implementation/integration tests", () => {
       _id: ObjectId("63b85961c2ad6d4b9048f7e1"),
       name: "Roadster Elite",
       brand: "Argon 18",
-      price: 1299.99,
       type: "Road",
       frame: "Carbon",
       fork: "XC",
@@ -145,7 +142,6 @@ describe("ShopRepository implementation/integration tests", () => {
       tires: "Road tires",
       suspension: "Hardtail",
       weight: 7.5,
-      available: true,
     });
     await addedBycicle.save();
 

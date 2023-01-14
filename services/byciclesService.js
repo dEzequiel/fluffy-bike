@@ -69,7 +69,6 @@ const byciclesService = (function () {
       _id,
       name,
       brand,
-      price,
       type,
       frame,
       fork,
@@ -79,14 +78,12 @@ const byciclesService = (function () {
       tires,
       suspension,
       weight,
-      available,
     } = result;
 
     const {
       includeId = true,
       includeName = true,
       includeBrand = true,
-      includePrice = true,
       includeType = true,
       includeFrame = true,
       includeFork = true,
@@ -96,7 +93,6 @@ const byciclesService = (function () {
       includeTires = true,
       includeSuspension = true,
       includeWeight = true,
-      includeAvailable = true, // Can this be default to true?
     } = options;
     // Return the entity desacoplated from the database object structure (DAO)
 
@@ -104,7 +100,6 @@ const byciclesService = (function () {
       ...{ id: includeId ? _id : undefined },
       ...{ name: includeName ? name : undefined },
       ...{ brand: includeBrand ? brand : undefined },
-      ...{ price: includePrice ? price : undefined },
       ...{ type: includeType ? type : undefined },
       ...{ frame: includeFrame ? frame : undefined },
       ...{ fork: includeFork ? fork : undefined },
@@ -114,7 +109,6 @@ const byciclesService = (function () {
       ...{ tires: includeTires ? tires : undefined },
       ...{ suspension: includeSuspension ? suspension : undefined },
       ...{ weight: includeWeight ? weight : undefined },
-      ...{ available: includeAvailable ? available : undefined },
     };
   };
 
