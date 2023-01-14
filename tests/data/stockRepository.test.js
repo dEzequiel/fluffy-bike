@@ -99,4 +99,26 @@ describe("StockRepository implementation/integration tests", () => {
     expect(stock.bycicles[0].bycicle._id).not.toBeNull();
     expect(stock.bycicles[0].bycicle._id).toEqual(addedBycicle._id);
   });
+
+  test("Should delete existing stock", async () => {
+    // Arrange
+    const sut = new StockRepository();
+    const shop = new ShopRepository();
+
+    const addedShop = await shop.createShop("Bike Shop");
+    const stock = await sut.createStock(addedShop._id);
+
+    // Act
+    await sut.delete(stock._id);
+
+        // Assert
+        await expect(sut.getById(stock._id)).rejects.toEqual(`No document found with id: ${stock._id}`);
+
+    // Assert
+    expect(stock).not.toBeNull();
+    expect(stock._id).not.toBeNull();
+    expect(stock.shopId).not.toBeNull();
+    expect(stock.bycicles).not.toBeNull();
+    expect(stock.bycicles.length).toBe(0);
+  });
 });

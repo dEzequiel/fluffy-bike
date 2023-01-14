@@ -20,6 +20,24 @@ class StockRepository extends Repository {
     return response;
   }
 
+  getById(id) {
+    const response = new Promise((resolve, reject) => {
+      StockModel.findById(ObjectId(id), (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with id: ${id}`);
+          }
+          resolve(result);
+        }
+      });
+    });
+
+    return response;
+  }
+
   addBycicleToStock(stockId, bycicleId, quantity) {
     const response = new Promise((resolve, reject) => {
       StockModel.findByIdAndUpdate(
@@ -45,6 +63,24 @@ class StockRepository extends Repository {
           }
         }
       );
+    });
+
+    return response;
+  }
+
+  delete(id) {
+    const response = new Promise((resolve, reject) => {
+      StockModel.remove(id, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (result === null) {
+            reject(`No document found with id: ${id}`);
+          }
+          resolve(result);
+        }
+      }); // Return plain js object instead of mongoose document
     });
 
     return response;
