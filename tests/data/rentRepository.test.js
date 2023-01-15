@@ -9,6 +9,7 @@ const ShopRepository = require("../../database/data-access/ShopRepository.js");
 const BycicleRepository = require("../../database/data-access/BycicleRepository.js");
 const StockRepository = require("../../database/data-access/StockRepository.js");
 const RentRepository = require("../../database/data-access/RentRepository.js");
+const rent = require("../../domain/models/rent.js");
 
 describe("StockRepository should override prototype chain inherit methods from Repository", () => {
   test("StockRepository dont have own methods, they are inherit from prototype", () => {
@@ -91,7 +92,6 @@ describe("StockRepository implementation/integration tests", () => {
       true
     );
     // Assert
-    console.log(result);
     expect(result).not.toBeNull();
     expect(result._id).not.toBeNull();
     expect(result.shop).not.toBeNull();
@@ -140,5 +140,184 @@ describe("StockRepository implementation/integration tests", () => {
     expect(result.bycicles).not.toBeNull();
     expect(result.bycicles.length).toBe(1);
     expect(result.bycicles[0].available).toBe(false);
+  });
+
+  test("Should update available status to true when a bycicle is unreted", async () => {
+    // Arrange
+    const sut = new RentRepository();
+    const shop = new ShopRepository();
+    const bycicle = new BycicleRepository();
+    const stock = new StockRepository();
+
+    const bycicleData = {
+      name: "Roadster Elite",
+      brand: "Argon 18",
+      type: "Road",
+      frame: "Carbon",
+      fork: "XC",
+      gears: "Derailleur gears",
+      brakes: "Hydraulic Disc",
+      wheels: "700c",
+      tires: "Road tires",
+      suspension: "Hardtail",
+      weight: 7.5,
+    };
+
+    const addedShop = await shop.createShop("Bike Shop");
+    const addedStock = await stock.createStock(addedShop._id);
+    const addedBycicle = await bycicle.add(bycicleData);
+
+    // Add bycicle to stock with available status true
+    // and total bycicles 2
+    await stock.addBycicleToStock(addedStock._id, addedBycicle._id, 2);
+
+    await sut.createRentPool(addedShop._id);
+    await sut.addByciclesToRentPool(addedShop._id, addedBycicle._id, true);
+
+    // Act
+    const result = await sut.unrentBike(addedShop._id, addedBycicle._id);
+
+    // Assert
+    expect(result).not.toBeNull();
+    expect(result.shopId).not.toBeNull();
+    expect(result.bycicles).not.toBeNull();
+    expect(result.bycicles.length).toBe(1);
+    expect(result.bycicles[0].available).toBe(true);
+  });
+
+  test("Should return a list of bycicles rented by a shop", async () => {
+    // Arrange
+    const sut = new RentRepository();
+    const shop = new ShopRepository();
+    const bycicle = new BycicleRepository();
+    const stock = new StockRepository();
+
+    const bycicleData = [
+      {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+      },
+      {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+      },
+    ];
+
+    const addedShop = await shop.createShop("Bike Shop");
+    const addedStock = await stock.createStock(addedShop._id);
+    const addedBycicle = await bycicle.add(bycicleData[0]);
+    const addedBycicle2 = await bycicle.add(bycicleData[1]);
+
+    // Add bycicle to stock with available status true
+    // and total bycicles 2
+    await stock.addBycicleToStock(addedStock._id, addedBycicle._id, 2);
+    await stock.addBycicleToStock(addedStock._id, addedBycicle2._id, 2);
+
+    await sut.createRentPool(addedShop._id);
+    await sut.addByciclesToRentPool(addedShop._id, addedBycicle._id, true);
+    await sut.addByciclesToRentPool(addedShop._id, addedBycicle2._id, true);
+
+    await sut.rentBike(addedShop._id, addedBycicle._id);
+
+    // Act
+    const result = await sut.getByciclesFilterByRent(addedShop._id, false);
+    const rentPool = await sut.getRentPool(addedShop._id);
+
+    // Assert
+    console.log(result);
+    expect(rentPool).not.toBeNull();
+    expect(rentPool.bycicles.length).toBe(2);
+
+    expect(result).not.toBeNull();
+    expect(result.bycicles.length).toBe(1);
+    result.bycicles.forEach((element) => {
+      expect(element.available).toBe(false);
+    });
+  });
+
+  test("Should return a list of bycicles available for rent by a shop", async () => {
+    // Arrange
+    const sut = new RentRepository();
+    const shop = new ShopRepository();
+    const bycicle = new BycicleRepository();
+    const stock = new StockRepository();
+
+    const bycicleData = [
+      {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+      },
+      {
+        name: "Roadster Elite",
+        brand: "Argon 18",
+        type: "Road",
+        frame: "Carbon",
+        fork: "XC",
+        gears: "Derailleur gears",
+        brakes: "Hydraulic Disc",
+        wheels: "700c",
+        tires: "Road tires",
+        suspension: "Hardtail",
+        weight: 7.5,
+      },
+    ];
+
+    const addedShop = await shop.createShop("Bike Shop");
+    const addedStock = await stock.createStock(addedShop._id);
+    const addedBycicle = await bycicle.add(bycicleData[0]);
+    const addedBycicle2 = await bycicle.add(bycicleData[1]);
+
+    // Add bycicle to stock with available status true
+    // and total bycicles 2
+    await stock.addBycicleToStock(addedStock._id, addedBycicle._id, 2);
+    await stock.addBycicleToStock(addedStock._id, addedBycicle2._id, 2);
+
+    await sut.createRentPool(addedShop._id);
+    await sut.addByciclesToRentPool(addedShop._id, addedBycicle._id, true);
+    await sut.addByciclesToRentPool(addedShop._id, addedBycicle2._id, true);
+
+    await sut.rentBike(addedShop._id, addedBycicle._id);
+
+    // Act
+    const result = await sut.getByciclesFilterByRent(addedShop._id, true);
+    const rentPool = await sut.getRentPool(addedShop._id);
+
+    // Assert
+    console.log(result);
+    expect(rentPool).not.toBeNull();
+    expect(rentPool.bycicles.length).toBe(2);
+
+    expect(result).not.toBeNull();
+    expect(result.bycicles.length).toBe(1);
+    result.bycicles.forEach((element) => {
+      expect(element.available).toBe(true);
+    });
   });
 });
