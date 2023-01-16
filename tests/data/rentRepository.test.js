@@ -1,18 +1,13 @@
 const database = require("../../database");
-const ShopModel = require("../../domain/models/shop.js");
-const StockModel = require("../../domain/models/stock.js");
-const BycicleModel = require("../../domain/models/bycicle.js");
 const RentModel = require("../../domain/models/rent.js");
 const ObjectId = require("mongodb").ObjectId;
-const Repository = require("../../database/data-access/Repository.js");
 const ShopRepository = require("../../database/data-access/ShopRepository.js");
 const BycicleRepository = require("../../database/data-access/BycicleRepository.js");
 const StockRepository = require("../../database/data-access/StockRepository.js");
 const RentRepository = require("../../database/data-access/RentRepository.js");
-const rent = require("../../domain/models/rent.js");
 
-describe("StockRepository should override prototype chain inherit methods from Repository", () => {
-  test("StockRepository dont have own methods, they are inherit from prototype", () => {
+describe("RentRepository should override prototype chain inherit methods from Repository", () => {
+  test("RentRepository dont have own methods, they are inherit from prototype", () => {
     // Arrange
     const sut = new RentRepository();
 
@@ -26,7 +21,7 @@ describe("StockRepository should override prototype chain inherit methods from R
 });
 
 let connection;
-describe("StockRepository implementation/integration tests", () => {
+describe("RentRepository implementation/integration tests", () => {
   beforeAll(async () => {
     await database.mongoDbConfig.connect();
   });
@@ -41,7 +36,7 @@ describe("StockRepository implementation/integration tests", () => {
 
   connection = database.mongoDbConfig.getConnection();
 
-  test("Should create a pool of rents for a shop", async () => {
+  test("Should create a pool of rents for a shop that exists", async () => {
     // Arrange
     const sut = new RentRepository();
     const shop = new ShopRepository();
@@ -64,16 +59,13 @@ describe("StockRepository implementation/integration tests", () => {
     const sut = new RentRepository();
     const inexistentShopId = new ObjectId("63c489cb76957a904587cb3a");
 
-    // Act
-    await expect(sut.createRentPool(inexistentShopId)).rejects.toThrowError(
-      "Shop doesn't exist"
-    );
+    // Act and assert
     await expect(sut.createRentPool(inexistentShopId)).rejects.toThrowError(
       "Shop doesn't exist"
     );
   });
 
-  test("Should add a rent option to pool of rents", async () => {
+  test("Should add a rent bycicle option to pool of rents", async () => {
     // Arrange
     const sut = new RentRepository();
     const shop = new ShopRepository();
@@ -113,7 +105,7 @@ describe("StockRepository implementation/integration tests", () => {
     expect(result.bycicles.length).toBe(1);
   });
 
-  test("Should reject promise when try to add a bycicle that dont exists to rent pool", async () => {
+  test("Should reject promise when try to add a bycicle that don't exists to rent pool", async () => {
     // Arrange
     const sut = new RentRepository();
     const shop = new ShopRepository();
@@ -122,13 +114,13 @@ describe("StockRepository implementation/integration tests", () => {
     const addedShop = await shop.createShop("Bike Shop");
     await sut.createRentPool(addedShop._id);
 
-    // Act
+    // Act and assert
     await expect(
       sut.addByciclesToRentPool(addedShop._id, inexistentBycicleId, true)
     ).rejects.toThrowError("Shop or bycicle doesn't exist");
   });
 
-  test("Should update available status to false when a bycicle is rented", async () => {
+  test("Should update available status to false when a bycicle from a shop is rented", async () => {
     // Arrange
     const sut = new RentRepository();
     const shop = new ShopRepository();
@@ -153,8 +145,6 @@ describe("StockRepository implementation/integration tests", () => {
     const addedStock = await stock.createStock(addedShop._id);
     const addedBycicle = await bycicle.add(bycicleData);
 
-    // Add bycicle to stock with available status true
-    // and total bycicles 2
     await stock.addBycicleToStock(addedStock._id, addedBycicle._id, 2);
 
     await sut.createRentPool(addedShop._id);
@@ -169,6 +159,21 @@ describe("StockRepository implementation/integration tests", () => {
     expect(result.bycicles).not.toBeNull();
     expect(result.bycicles.length).toBe(1);
     expect(result.bycicles[0].available).toBe(false);
+  });
+
+  test("Should reject promise when try to rent a bycicle that don't exists", async () => {
+    // Arrange
+    const sut = new RentRepository();
+    const shop = new ShopRepository();
+    const inexistentBycicleId = new ObjectId("63c489cb76957a904587cb3a");
+
+    const addedShop = await shop.createShop("Bike Shop");
+    await sut.createRentPool(addedShop._id);
+
+    // Act and assert
+    await expect(
+      sut.rentBike(addedShop._id, inexistentBycicleId)
+    ).rejects.toThrowError("Shop or bycicle doesn't exist");
   });
 
   test("Should update available status to true when a bycicle is unreted", async () => {
@@ -196,8 +201,6 @@ describe("StockRepository implementation/integration tests", () => {
     const addedStock = await stock.createStock(addedShop._id);
     const addedBycicle = await bycicle.add(bycicleData);
 
-    // Add bycicle to stock with available status true
-    // and total bycicles 2
     await stock.addBycicleToStock(addedStock._id, addedBycicle._id, 2);
 
     await sut.createRentPool(addedShop._id);
@@ -255,8 +258,6 @@ describe("StockRepository implementation/integration tests", () => {
     const addedBycicle = await bycicle.add(bycicleData[0]);
     const addedBycicle2 = await bycicle.add(bycicleData[1]);
 
-    // Add bycicle to stock with available status true
-    // and total bycicles 2
     await stock.addBycicleToStock(addedStock._id, addedBycicle._id, 2);
     await stock.addBycicleToStock(addedStock._id, addedBycicle2._id, 2);
 
@@ -281,6 +282,8 @@ describe("StockRepository implementation/integration tests", () => {
       expect(element.available).toBe(false);
     });
   });
+
+
 
   test("Should return a list of bycicles available for rent by a shop", async () => {
     // Arrange

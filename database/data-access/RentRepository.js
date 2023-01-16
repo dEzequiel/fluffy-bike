@@ -65,7 +65,14 @@ class RentRepository extends Repository {
     return result;
   }
 
-  rentBike(shopId, bycicleId) {
+  async rentBike(shopId, bycicleId) {
+    const shopExist = await refExistance.shopExist(shopId);
+    const bycicleExist = await refExistance.bycicleExist(bycicleId);
+
+    if (!shopExist || !bycicleExist) {
+      throw new Error("Shop or bycicle doesn't exist");
+    }
+
     const response = new Promise((resolve, reject) => {
       RentModel.findOneAndUpdate(
         {
@@ -95,7 +102,14 @@ class RentRepository extends Repository {
     return response;
   }
 
-  unrentBike(shopId, bycicleId) {
+  async unrentBike(shopId, bycicleId) {
+    const shopExist = await refExistance.shopExist(shopId);
+    const bycicleExist = await refExistance.bycicleExist(bycicleId);
+
+    if (!shopExist || !bycicleExist) {
+      throw new Error("Shop or bycicle doesn't exist");
+    }
+
     const response = new Promise((resolve, reject) => {
       RentModel.findOneAndUpdate(
         {
@@ -126,6 +140,7 @@ class RentRepository extends Repository {
   }
 
   getByciclesFilterByRent(shopId, rentStatus) {
+    
     const response = new Promise((resolve, reject) => {
       RentModel.aggregate([
         {

@@ -12,7 +12,7 @@ module.exports = {
   shopExist: async (id) => {
     const entity = await models.shop.findById(id);
 
-    if (!entity) return false;
+    if (entity === null) return false;
 
     return true;
   },
