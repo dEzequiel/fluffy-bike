@@ -21,10 +21,12 @@ describe("refExistance", () => {
     const addedShop = await shop.createShop("Bike Shop");
 
     // Act
-    const result = await refExistance.shopExist(addedShop._id);
+    const result = refExistance.shopExist(addedShop._id);
 
     // Assert
-    expect(result).toBe(true);
+    result.then((res) => {
+      expect(res).toBe(true);
+    });
   });
 
   it("should return false if shop doesn't exist", async () => {

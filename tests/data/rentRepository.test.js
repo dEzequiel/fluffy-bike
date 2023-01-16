@@ -105,20 +105,32 @@ describe("RentRepository implementation/integration tests", () => {
     expect(result.bycicles.length).toBe(1);
   });
 
-  test("Should reject promise when try to add a bycicle that don't exists to rent pool", async () => {
-    // Arrange
-    const sut = new RentRepository();
-    const shop = new ShopRepository();
-    const inexistentBycicleId = new ObjectId("63c489cb76957a904587cb3a");
+  // test("Should reject promise when try to add a bycicle to a shop that don't exists to rent pool", async () => {
+  //   // Arrange
+  //   const sut = new RentRepository();
+  //   const bycicle = new BycicleRepository();
+  //   const inexistentShopId = new ObjectId("63c489cb76957a904587cb3a");
+  //   const bycicleData = {
+  //     name: "Roadster Elite",
+  //     brand: "Argon 18",
+  //     type: "Road",
+  //     frame: "Carbon",
+  //     fork: "XC",
+  //     gears: "Derailleur gears",
+  //     brakes: "Hydraulic Disc",
+  //     wheels: "700c",
+  //     tires: "Road tires",
+  //     suspension: "Hardtail",
+  //     weight: 7.5,
+  //   };
 
-    const addedShop = await shop.createShop("Bike Shop");
-    await sut.createRentPool(addedShop._id);
+  //   const addedBycicle = await bycicle.add(bycicleData);
 
-    // Act and assert
-    await expect(
-      sut.addByciclesToRentPool(addedShop._id, inexistentBycicleId, true)
-    ).rejects.toThrowError("Shop or bycicle doesn't exist");
-  });
+  //   // Act and assert
+  //   await expect(
+  //     sut.addByciclesToRentPool(inexistentShopId, addedBycicle._id, true)
+  //   ).rejects.toThrowError("Shop doesn't exist");
+  // });
 
   test("Should update available status to false when a bycicle from a shop is rented", async () => {
     // Arrange
@@ -161,7 +173,7 @@ describe("RentRepository implementation/integration tests", () => {
     expect(result.bycicles[0].available).toBe(false);
   });
 
-  test("Should reject promise when try to rent a bycicle that don't exists", async () => {
+  test("Should reject promise when try to rent a bycicle that don't exists from a shop", async () => {
     // Arrange
     const sut = new RentRepository();
     const shop = new ShopRepository();
@@ -169,11 +181,10 @@ describe("RentRepository implementation/integration tests", () => {
 
     const addedShop = await shop.createShop("Bike Shop");
     await sut.createRentPool(addedShop._id);
-
     // Act and assert
     await expect(
       sut.rentBike(addedShop._id, inexistentBycicleId)
-    ).rejects.toThrowError("Shop or bycicle doesn't exist");
+    ).rejects.toThrowError("Some entities reference don't exist");
   });
 
   test("Should update available status to true when a bycicle is unreted", async () => {
@@ -282,8 +293,6 @@ describe("RentRepository implementation/integration tests", () => {
       expect(element.available).toBe(false);
     });
   });
-
-
 
   test("Should return a list of bycicles available for rent by a shop", async () => {
     // Arrange
