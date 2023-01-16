@@ -62,9 +62,12 @@ describe("StockRepository implementation/integration tests", () => {
   test("Should reject promise when try to create a rent pool for a shop that don't exists", async () => {
     // Arrange
     const sut = new RentRepository();
-    const inexistentShopId = ObjectId("63c489cb76957a904587cb3a");
+    const inexistentShopId = new ObjectId("63c489cb76957a904587cb3a");
 
     // Act
+    await expect(sut.createRentPool(inexistentShopId)).rejects.toThrowError(
+      "Shop doesn't exist"
+    );
     await expect(sut.createRentPool(inexistentShopId)).rejects.toThrowError(
       "Shop doesn't exist"
     );
@@ -108,6 +111,21 @@ describe("StockRepository implementation/integration tests", () => {
     expect(result.shop).not.toBeNull();
     expect(result.bycicles).not.toBeNull();
     expect(result.bycicles.length).toBe(1);
+  });
+
+  test("Should reject promise when try to add a bycicle that dont exists to rent pool", async () => {
+    // Arrange
+    const sut = new RentRepository();
+    const shop = new ShopRepository();
+    const inexistentBycicleId = new ObjectId("63c489cb76957a904587cb3a");
+
+    const addedShop = await shop.createShop("Bike Shop");
+    await sut.createRentPool(addedShop._id);
+
+    // Act
+    await expect(
+      sut.addByciclesToRentPool(addedShop._id, inexistentBycicleId, true)
+    ).rejects.toThrowError("Shop or bycicle doesn't exist");
   });
 
   test("Should update available status to false when a bycicle is rented", async () => {
