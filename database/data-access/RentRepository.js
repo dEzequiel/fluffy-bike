@@ -116,38 +116,36 @@ class RentRepository extends Repository {
   }
 
   async unrentBike(shopId, bycicleId) {
-    const shopExist = await refExistance.shopExist(shopId);
-    const bycicleExist = await refExistance.bycicleExist(bycicleId);
-
-    if (!shopExist || !bycicleExist) {
-      throw new Error("Shop or bycicle doesn't exist");
-    }
-
     const response = new Promise((resolve, reject) => {
-      RentModel.findOneAndUpdate(
-        {
-          $and: [
-            { shop: shopId },
-            {
-              bycicles: {
-                $elemMatch: {
-                  bycicle: bycicleId,
+      refExistance.shopAndBikeExists(shopId, bycicleId).then((result) => {
+        if (result === false) {
+          return reject(new Error("Some entities reference don't exist"));
+        }
+        RentModel.findOneAndUpdate(
+          {
+            $and: [
+              { shop: shopId },
+              {
+                bycicles: {
+                  $elemMatch: {
+                    bycicle: bycicleId,
+                  },
                 },
               },
-            },
-          ],
-        },
-        { $set: { "bycicles.$.available": "true" } },
-        { new: true },
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            reject(err);
-          } else {
-            resolve(result);
+            ],
+          },
+          { $set: { "bycicles.$.available": "true" } },
+          { new: true },
+          (err, result) => {
+            if (err) {
+              console.error(err);
+              reject(err);
+            } else {
+              resolve(result);
+            }
           }
-        }
-      );
+        );
+      });
     });
     return response;
   }
