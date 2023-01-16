@@ -1,10 +1,19 @@
 const Repository = require("./Repository");
 const RentModel = require("../../domain/models/rent.js");
 const ObjectId = require("mongodb").ObjectId;
+const refExistance = require("../../utils/refExistance");
 
 class RentRepository extends Repository {
-  createRentPool(shopId) {
+  async createRentPool(shopId) {
     const response = new Promise((resolve, reject) => {
+      const shopExist = refExistance.shopExist(shopId);
+
+      shopExist.then((result) => {
+        if (!result) {
+          reject(new Error("Shop doesn't exist"));
+        }
+      });
+
       const rent = new RentModel({ shop: shopId, bycicles: [] });
 
       rent.save((err, result) => {
@@ -21,6 +30,21 @@ class RentRepository extends Repository {
 
   addByciclesToRentPool(shopId, bycicleId, status) {
     const response = new Promise((resolve, reject) => {
+      const shopExist = refExistance.shopExist(shopId);
+      const bycicleExist = refExistance.bikeExist(bycicleId);
+
+      shopExist.then((result) => {
+        if (!result) {
+          reject("Shop doesn't exist");
+        }
+      });
+
+      shopExist.then((result) => {
+        if (!result) {
+          reject("Shop doesn't exist");
+        }
+      });
+
       RentModel.findOneAndUpdate(
         { shop: shopId },
         {
