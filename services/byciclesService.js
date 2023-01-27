@@ -14,12 +14,12 @@ const byciclesService = (function () {
 
   const getAllAsync = async () => {
     const entities = repository.getAll().then((result) => {
-      const jsonEntities = [];
+      const formEntities = [];
       result.forEach((entity) => {
-        jsonEntities.push(parser(entity));
+        formEntities.push(parser(entity));
       });
 
-      return jsonEntities;
+      return formEntities;
     });
 
     return entities;
