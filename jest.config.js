@@ -1,6 +1,6 @@
 module.exports = {
   verbose: true,
-  //collectCoverage: true,
+  collectCoverage: true,
   testEnvironment: "node",
   testTimeout: 15000,
 };
