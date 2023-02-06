@@ -1,19 +1,11 @@
 const Repository = require("./Repository");
 const RentModel = require("../../domain/models/rent.js");
 const ObjectId = require("mongodb").ObjectId;
-const refExistance = require("../../utils/refExistance");
 
 class RentRepository extends Repository {
   createRentPool(shopId) {
     const response = new Promise((resolve, reject) => {
-      refExistance.shopExist(shopId).then((result) => {
-        if (!result) {
-          reject(new Error("Shop doesn't exist"));
-        }
-      });
-
       const rent = new RentModel({ shop: shopId, bycicles: [] });
-
       rent.save((err, result) => {
         if (err) {
           console.error(err);
@@ -28,53 +20,41 @@ class RentRepository extends Repository {
 
   addByciclesToRentPool(shopId, bycicleId, status) {
     const response = new Promise((resolve, reject) => {
-      refExistance.shopExist(shopId).then((result) => {
-        if (!result) {
-          reject(new Error("Shop doesn't exist"));
-        }
-
-        RentModel.findOneAndUpdate(
-          { shop: shopId },
-          {
-            $push: {
-              bycicles: {
-                bycicle: bycicleId,
-                available: status,
-              },
+      RentModel.findOneAndUpdate(
+        { shop: shopId },
+        {
+          $push: {
+            bycicles: {
+              bycicle: bycicleId,
+              available: status,
             },
           },
-          { new: true },
-          (err, result) => {
-            if (err) {
-              console.error(err);
-              reject(err);
-            } else {
-              resolve(result);
-            }
+        },
+        { new: true },
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(result);
           }
-        );
-      });
+        }
+      );
     });
     return response;
   }
 
-  getRentPool(shopId) {
+  getShopRentPool(shopId) {
     const response = new Promise((resolve, reject) => {
-      refExistance.shopExist(shopId).then((result) => {
-        if (result === false) {
-          reject(new Error("Shop doesn't exist"));
-        }
+      const rent = RentModel.findOne({ shop: shopId });
 
-        const rent = RentModel.findOne({ shop: shopId });
-
-        rent
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+      rent
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
 
     return response;
@@ -82,70 +62,60 @@ class RentRepository extends Repository {
 
   rentBike(shopId, bycicleId) {
     const response = new Promise((resolve, reject) => {
-      refExistance.shopAndBikeExists(shopId, bycicleId).then((result) => {
-        if (result === false) {
-          return reject(new Error("Some entities reference don't exist"));
-        }
-        RentModel.findOneAndUpdate(
-          {
-            $and: [
-              { shop: shopId },
-              {
-                bycicles: {
-                  $elemMatch: {
-                    bycicle: bycicleId,
-                  },
+      RentModel.findOneAndUpdate(
+        {
+          $and: [
+            { shop: shopId },
+            {
+              bycicles: {
+                $elemMatch: {
+                  bycicle: bycicleId,
                 },
               },
-            ],
-          },
-          { $set: { "bycicles.$.available": "false" } },
-          { new: true },
-          (err, result) => {
-            if (err) {
-              console.error(err);
-              reject(err);
-            } else {
-              resolve(result);
-            }
+            },
+          ],
+        },
+        { $set: { "bycicles.$.available": "false" } },
+        { new: true },
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(result);
           }
-        );
-      });
+        }
+      );
     });
     return response;
   }
 
   async unrentBike(shopId, bycicleId) {
     const response = new Promise((resolve, reject) => {
-      refExistance.shopAndBikeExists(shopId, bycicleId).then((result) => {
-        if (result === false) {
-          return reject(new Error("Some entities reference don't exist"));
-        }
-        RentModel.findOneAndUpdate(
-          {
-            $and: [
-              { shop: shopId },
-              {
-                bycicles: {
-                  $elemMatch: {
-                    bycicle: bycicleId,
-                  },
+      RentModel.findOneAndUpdate(
+        {
+          $and: [
+            { shop: shopId },
+            {
+              bycicles: {
+                $elemMatch: {
+                  bycicle: bycicleId,
                 },
               },
-            ],
-          },
-          { $set: { "bycicles.$.available": "true" } },
-          { new: true },
-          (err, result) => {
-            if (err) {
-              console.error(err);
-              reject(err);
-            } else {
-              resolve(result);
-            }
+            },
+          ],
+        },
+        { $set: { "bycicles.$.available": "true" } },
+        { new: true },
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(result);
           }
-        );
-      });
+        }
+      );
     });
     return response;
   }
