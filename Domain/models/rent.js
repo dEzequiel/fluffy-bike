@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const Schema = mongoose.Schema;
+dotenv.config();
 
 const RentSchema = new mongoose.Schema({
   shop: { type: Schema.Types.ObjectId },
