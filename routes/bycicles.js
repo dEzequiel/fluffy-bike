@@ -3,11 +3,6 @@ const controllers = require("../controllers").byciclesController;
 
 const router = express.Router();
 
-// Actually if you pass anything after the /user/ path, eg, /users/anythingHere
-// would be matched by the /users/:id route. This is the way Express.js works.
-// The routes you define are matched sequentially in the
-// order they are defined.
-
 router.get("/", async (req, res) => {
   res.send({ message: "Hello World" });
 });
@@ -60,12 +55,6 @@ router.delete("/del/:id", async (req, res) => {
   const { statusCode, data } = resource;
   return res.status(statusCode).json(data);
 });
-
-
-
-
-
-
 
 router.get("/brand/:brand", async (req, res) => {
   const brand = req.params.brand;

@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-
 dotenv.config();
-
-/// Bycicle Schema
-/// Bycicle Model
-///
 
 const BycicleSchema = new mongoose.Schema(
   {
@@ -65,7 +60,7 @@ const BycicleSchema = new mongoose.Schema(
 // depending on the environment variable.
 
 if (process.env.NODE_ENV === "development") {
-  BycicleSchema.set("collection", "Testing");
+  BycicleSchema.set("collection", "Bycicle-Testing");
 }
 
 BycicleSchema.statics.findByName = function (name) {

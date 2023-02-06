@@ -1,24 +1,6 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-
 dotenv.config();
-
-// SINGLETON
-// Cuando quieres garantizar que solo exista una única instancia de una
-// clase que se encarga de la gestión de ciertos recursos compartidos,
-// como una base de datos o una conexión a un servicio externo.
-
-/**
- * 
- * NODE_ENV=development
- * NODE_ENV=production
- * 
- * Con cross-env establecer valor de variables de entorno independiente
- * del sistema.
- * 
- *  "devstart": "cross-env NODE_ENV=development node ./app.js",
-    "start": "cross-env NODE_ENV=production node ./app.js",
- */
 
 var uris = {
   development: process.env.MONGO_URI_DEVELOPMENT,
@@ -64,14 +46,6 @@ const databaseModule = (function () {
     } catch (err) {
       console.log(err);
     }
-
-    /** MODULE PATTERN
-     * Object properties pointing to functions
-     * returned inside this IIFE.
-     *
-     * Only this public attributes are available outside
-     * this module.
-     */
   }
   return {
     connect: connect,
