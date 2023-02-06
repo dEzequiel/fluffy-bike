@@ -9,16 +9,15 @@ class ShopRepository extends Repository {
       const shop = new ShopModel({ name, bycicles: [] });
 
       shop.save((err, result) => {
-        if(err){
+        if (err) {
           console.error(err);
           reject(err);
         } else {
           resolve(result);
         }
-      })
-      })
-      return response
-
+      });
+    });
+    return response;
   }
 
   getById(id) {
@@ -34,29 +33,6 @@ class ShopRepository extends Repository {
           resolve(result);
         }
       });
-    });
-
-    return response;
-  }
-
-  addBycicleToShop(shopId, bycicleId) {
-    const response = new Promise((resolve, reject) => {
-      ShopModel.findByIdAndUpdate(
-        shopId,
-        { $push: { bycicles: bycicleId } },
-        { new: true },
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            reject(err);
-          } else {
-            if (result === null) {
-              reject(`No document found with id: ${shopId}`);
-            }
-            resolve(result);
-          }
-        }
-      );
     });
 
     return response;
@@ -92,12 +68,12 @@ class ShopRepository extends Repository {
           }
           resolve(result);
         }
-      }).populate("bycicles");
+      }).populate("stock");
     });
 
     return response;
   }
 
-  async 
+  async;
 }
 module.exports = ShopRepository;
