@@ -1,7 +1,7 @@
-module.exports.rent = require("./rent.js");
+module.exports.RentModel = require("./rent.js");
 
-module.exports.bycicle = require("./bycicle.js");
+module.exports.BycicleModel = require("./bycicle.js");
 
-module.exports.shop = require("./shop.js");
+module.exports.ShopModel = require("./shop.js");
 
-module.exports.stock = require("./stock.js");
+module.exports.StockModel = require("./stock.js");
