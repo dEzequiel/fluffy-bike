@@ -1,11 +1,10 @@
 const Repository = require("./Repository");
-const Model = require("../../domain/models/bycicle.js");
-const ObjectId = require("mongodb").ObjectId;
+const BycicleModel = require("../../domain/models").BycicleModel
 
 class BycicleRepository extends Repository {
   getAll() {
     const response = new Promise((resolve, reject) => {
-      Model.find({}, (err, result) => {
+      BycicleModel.find({}, (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -22,7 +21,7 @@ class BycicleRepository extends Repository {
 
   getById(id) {
     const response = new Promise((resolve, reject) => {
-      Model.findById(ObjectId(id), (err, result) => {
+      BycicleModel.findOne({ _id: id }, (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -40,7 +39,7 @@ class BycicleRepository extends Repository {
 
   getByBrand(brand) {
     const response = new Promise((resolve, reject) => {
-      Model.find({ brand: brand }, (err, result) => {
+      BycicleModel.find({ brand: brand }, (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -58,7 +57,7 @@ class BycicleRepository extends Repository {
 
   delete(id) {
     const response = new Promise((resolve, reject) => {
-      Model.findByIdAndDelete(id, (err, result) => {
+      BycicleModel.findOneAndRemove({ _id: id }, (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -68,7 +67,7 @@ class BycicleRepository extends Repository {
           }
           resolve(result);
         }
-      }); // Return plain js object instead of mongoose document
+      });
     });
 
     return response;
@@ -90,7 +89,7 @@ class BycicleRepository extends Repository {
     } = data || {};
 
     const response = new Promise((resolve, reject) => {
-      const newDoc = new Model({
+      const newDoc = new BycicleModel({
         name,
         brand,
         type,
@@ -119,7 +118,7 @@ class BycicleRepository extends Repository {
 
   addMany(data) {
     const response = new Promise((resolve, reject) => {
-      Model.insertMany(data, (err, result) => {
+      BycicleModel.insertMany(data, (err, result) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -134,7 +133,7 @@ class BycicleRepository extends Repository {
 
   update(id, item) {
     const response = new Promise((resolve, reject) => {
-      Model.findOneAndUpdate(
+      BycicleModel.findOneAndUpdate(
         { _id: id },
         item,
         { new: true },
