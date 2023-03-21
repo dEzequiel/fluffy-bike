@@ -6,7 +6,7 @@ const byciclesService = (function () {
 
   const getByIdAsync = async (id) => { 
     const entity = repository.getById(id).then((result) => {
-      return parser(result);
+      return result
     });
 
     return entity;

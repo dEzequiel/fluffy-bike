@@ -3,7 +3,6 @@ const repositories = require("../../database/data-access");
 const models = require("../../domain/models");
 const ObjectId = require("mongodb").ObjectId;
 
-let connection;
 describe("RentRepository implementation/integration tests", () => {
   beforeAll(async () => {
     await database.mongoMigrationConfig.connect();
@@ -16,8 +15,6 @@ describe("RentRepository implementation/integration tests", () => {
   afterAll(async () => {
     await database.mongoMigrationConfig.disconnect();
   });
-
-  connection = database.mongoMigrationConfig.getConnection();
 
   test("Should create shop, and stock should be created automatically", async () => {
     // Arrange
@@ -85,6 +82,6 @@ describe("RentRepository implementation/integration tests", () => {
     expect(addedShop.stock).toBeDefined();
     expect(addedShop.stock).toStrictEqual(stock._id);
     expect(stock.shop).toStrictEqual(addedShop._id);
-    expect(stock.bycicles.length).toBe(1)
+    expect(stock.bycicles.length).toBe(1);
   });
 });

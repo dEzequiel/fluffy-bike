@@ -22,7 +22,6 @@ describe("Shop service testing", () => {
     await database.mongoMigrationConfig.disconnect();
   });
 
-  connection = database.mongoMigrationConfig.getConnection();
   const repository = new ShopRepository();
 
   describe("Connection testing", () => {

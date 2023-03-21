@@ -3,7 +3,6 @@ const repositories = require("../../database/data-access");
 const models = require("../../domain/models");
 const ObjectId = require("mongodb").ObjectId;
 
-let connection;
 describe("RentRepository implementation/integration tests", () => {
   beforeAll(async () => {
     await database.mongoDbConfig.connect();
@@ -16,8 +15,6 @@ describe("RentRepository implementation/integration tests", () => {
   afterEach(async () => {
     await models.rent.collection.drop();
   });
-
-  connection = database.mongoDbConfig.getConnection();
 
   test("Should create rent pool when creates a shop.", async () => {
     // Arrange
@@ -71,6 +68,5 @@ describe("RentRepository implementation/integration tests", () => {
     // Assert
     console.log(rents);
     expect(stock.bycicles[0].quantity).toBe(2);
-
   });
 });
